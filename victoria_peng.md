@@ -1,3 +1,3 @@
 # econ490
 
-Welcome to the ECON 490 class repo!
+Hi, my name is Victoria. I am from Beijing, China. 
