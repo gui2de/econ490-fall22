@@ -1,1 +1,0 @@
-My name is Abigail Orbe, and I am working towards by BA.
