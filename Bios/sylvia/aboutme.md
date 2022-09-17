@@ -1,6 +1,9 @@
 My name is Sylvia Brown.
 I’m from Massachusetts.
 
+My favorite everyday drink is cafe au lait.
+
+Lyrics from one of my favorite songs:
 A stick, a stone, it's the end of the road
 It's the rest of a stump, it's a little alone
 It's a sliver of glass, it is life, it's the sun
