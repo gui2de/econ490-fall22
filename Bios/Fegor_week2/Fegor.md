@@ -61,3 +61,5 @@ See I never trade you for nothing (ku lo sa)
 This love make me dey stunting (ku lo sa)
 Without you I no fit do nothing (ku lo sa)
 Omoge tell me wetin suppin (ku lo sa, oh)
+
+490 code - requested 
