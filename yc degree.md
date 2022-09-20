@@ -1,1 +1,0 @@
-Yuri is in the Physics and Economics Major
