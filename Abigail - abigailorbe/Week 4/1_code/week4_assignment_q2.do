@@ -1,4 +1,4 @@
-********** Question 2
+********** Question 2 // Did you manage to add school_id to your dataset? Can't seem to find it in your code. What else were you not able to do? Just leave a comment. And then upload your work. Well done!
 // Copied from hint:
 global school "/Users/abigailorbe/Library/CloudStorage/Box-Box/Econ490_Fall2022/Week4/04_assignment/data/psle_student_raw.dta"
 
