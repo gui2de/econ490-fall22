@@ -2,7 +2,7 @@
 
 
 ////PLEASE READ////
-global username "C:\Users\15162" // REVIEWER: Change "15162"to your username, then the rest of the code should run. Q2 will take a LONG time to run because of the reshape command.
+global username "C:\Users\15162" // REVIEWER: Change "15162"to your username, then the rest of the code should run. Q2 will take a LONG time to run because of the reshape command. For Q2, my work mainly mirrors the hint file, with a couple display commands of the variables to see what's going on with the scraping. Comments in parentheses are my comments to Q2.
 
 
 
@@ -75,11 +75,11 @@ drop if var2=="" & var3==""
 
 
 *candidate ID variable
-di var1 //relevant info 14 from back, consistent
+di var1 //(relevant info 14 from back, consistent)
 gen cand_id = substr(var1,-14,.)
 
 *gender
-di var3 //relevant info 1 from back
+di var3 //(relevant info 1 from back)
 gen gender = substr(var3,-1,.)
 
 
@@ -87,19 +87,19 @@ gen gender = substr(var3,-1,.)
 di var2
 gen len=strlen(var2)
 codebook len
-gen prem_number =  substr(var2,-11, .) //?
+gen prem_number =  substr(var2,-11, .) 
 drop len
 
 *Name
-di var4 //names will have different lengths
-gen name =  substr(var4,strpos(var4, "<P>") +3 , .) //Assume movement from 0
+di var4 //(names will have different lengths)
+gen name =  substr(var4,strpos(var4, "<P>") +3 , .)
 
 *grades
 di var5
 replace var5 = substr(var5,ustrpos(var5, "LEFT") +6 , .)
 di var5
 replace var5 = substr(var5,1 , strlen(var5) - 7)
-di var5 //cuts the scraping remnant
+di var5 //(cuts the scraping remnant)
 
 *all the subject info is in one columns, create separate columns
 split var5, parse(,) //use "comma" as the parser.
