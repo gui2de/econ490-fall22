@@ -32,8 +32,7 @@ replace pixel_household = 1 if mode_pixel != pixel_n
 bysort village: egen pixel_village = mean(pixel_household)
 replace pixel_village = 1 if pixel_village > 0 
 tab pixel_village
-* Identifying village names 
-list village if mode_pixel == 1
+
 
 ** Part C
 * creating dummy for consistency in village payout
@@ -190,6 +189,7 @@ rename X12 trans_nocni
 
 *** Final check 
 *fix column width issue so that it's easy to eyeball the data
+drop table21
 order table 
 browse
 
