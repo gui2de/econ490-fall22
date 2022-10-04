@@ -29,7 +29,7 @@ label variable pixel_consistent "Are payouts consistent without pixel?"
 
 bysort pixel: egen pixel_payout_min = min(payout)
 bysort pixel: egen pixel_payout_max = max(payout)
-label variable pixel_payout_min "Minimum payout within pixel"
+label variable pixel_payout_min "Maximum payout within pixel"
 label variable pixel_payout_max "Maximum payout within pixel"
 
 replace pixel_consistent = 0 if pixel_payout_min == pixel_payout_max
