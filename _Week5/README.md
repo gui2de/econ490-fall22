@@ -45,6 +45,8 @@ When you are done, create a pull request with your working materials to the `dev
 This week, do not request a review from the group in general.
 Instead, request a review from all the members of the group after yours:
 Group 1 should request the members of Group 2, and so on (G5 should request G1).
+You can find the list of group members (and their github username) in the Excel file
+at the root of the _Group Projects folder of the repository.
 All members should then run the other group's code and provide feedback
 on the function, execution, and documentation, including suggestions for new features or options.
 The original group should respond to all suggestions with thoughtful responses about their viability,
