@@ -15,13 +15,12 @@ program define group5
 	local var1: word 1 of `anything'
 	local var2: word 2 of `anything'
 	reg `var1' `var2'
-	outreg2 using demonstration.doc, replace
+	outreg2 using "$wd/demonstration.doc", replace
 end
 
 group5 ln_wage age
 
 /// to drop the program: 
-///
-prog drop group5
+/// prog drop group5
 
 
