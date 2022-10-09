@@ -1,0 +1,20 @@
+{\rtf1\fs24
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx1872\clbrdrt\brdrs\cellx3312\clbrdrt\brdrs\cellx4752
+\ql \cell\qc (1)\cell\qc (2)\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx1872\cellx3312\cellx4752
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx1872\clbrdrb\brdrs\cellx3312\clbrdrb\brdrs\cellx4752
+\ql VARIABLES\cell\qc ln_wage\cell\qc ln_wage\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx1872\cellx3312\cellx4752
+\ql \cell\qc \cell\qc \cell\row
+\ql race\cell\qc -0.114***\cell\qc -0.114***\cell\row
+\ql \cell\qc (0.00583)\cell\qc (0.00583)\cell\row
+\ql Constant\cell\qc 1.824***\cell\qc 1.824***\cell\row
+\ql \cell\qc (0.00810)\cell\qc (0.00810)\cell\row
+\ql \cell\qc \cell\qc \cell\row
+\ql Observations\cell\qc 28,534\cell\qc 28,534\cell\row
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx1872\clbrdrb\brdrs\cellx3312\clbrdrb\brdrs\cellx4752
+\ql R-squared\cell\qc 0.013\cell\qc 0.013\cell\row
+\pard\qc
+Standard errors in parentheses\par
+*** p<0.01, ** p<0.05, * p<0.1\par
+}
