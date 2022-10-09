@@ -2,7 +2,14 @@
 sysuse lifeexp.dta, clear
 regcompare lexp gnppc popgrowth
 
-*This summary table shows the regression comparison of life expentancy using GNP per capita and population growth as regressors. The gnppc variable is statistically significant as well as the multiple regression with population growth. The interaction term with pop. growth is also significant. This shows that gnppc and population growth of a country are separate important factors of life expentancy. 
+*This summary table shows the regression comparison of life expentancy 
+*using GNP per capita and population growth as regressors. 
+
+*The gnppc variable is statistically significant as well as the multiple regression with population growth. 
+
+*The interaction term with pop. growth is also significant. 
+
+*This shows that gnppc and population growth of a country are separate important factors of life expentancy. 
 
 
 // Use case 2 - Antonio
