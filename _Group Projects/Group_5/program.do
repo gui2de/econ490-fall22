@@ -1,21 +1,24 @@
 // Set global dir
 
+global wd "/Users/miglepetrauskaite/Desktop/GITHUB/Repo/econ490-fall22/_Group Projects/Group_5"
+global sesame_data "$wd/4-sesame-data.dta"
 
-
+// set trace on
 // Create a program
 cap prog drop group5 
 
-program group5					   /// regressing treatment and dependent variable, exporting regression table
-	use "/Users/miglepetrauskaite/Documents/1. Washington DC/Academics/2 Semester/Econometrics/Adv econ II/4. Instrumental variables/4-sesame-data.dta"	   	/// sysuse not working, uploading own data 
-	syntax anything 			/// write two variables
+/// regressing treatment and dependent variable, exporting regression table
+program define group5
+	use "$sesame_data", clear
+	syntax anything
 	local var1: word 1 of `anything'
 	local var2: word 2 of `anything'
 	reg `var1' `var2'
-	outreg2 using program-test-reg.doc
+	outreg2 using test_regression_results.doc
 end
 
+group5 viewcat treatment
 
-group5 age treatment 		/// testing the program
- 
-/// to drop the program: prog drop group5
+/// to drop the program: 
+// prog drop group5
 
