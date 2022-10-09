@@ -1,13 +1,9 @@
-// Set global dir
-
+// Set your global dir
 global wd "/Users/miglepetrauskaite/Desktop/GITHUB/Repo/econ490-fall22/_Group Projects/Group_5"
 
-// set trace on
-// Create a program
 
-cap prog drop group5 
+/// The following program will first of all install the user-written outreg2 command and, using the data from the internet, run a simple regression using two variables that you specify. The program will also export the regression results into a neat table in the directory you specify:
 
-/// regressing treatment and dependent variable, exporting regression table
 program define group5
 	ssc install outreg2
 	webuse nlswork, clear
@@ -18,9 +14,8 @@ program define group5
 	outreg2 using "$wd/demonstration.doc", replace
 end
 
-group5 ln_wage age
 
-/// to drop the program: 
+/// if you need to drop the program, uncomment the following: 
 /// prog drop group5
 
 
