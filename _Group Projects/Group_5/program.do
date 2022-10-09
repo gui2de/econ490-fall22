@@ -9,6 +9,7 @@ cap prog drop group5
 
 /// regressing treatment and dependent variable, exporting regression table
 program define group5
+	ssc install outreg2
 	use "$sesame_data", clear
 	syntax anything
 	local var1: word 1 of `anything'
