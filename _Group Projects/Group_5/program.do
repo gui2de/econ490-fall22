@@ -1,14 +1,10 @@
 // Set global dir
 
 global wd "/Users/miglepetrauskaite/Desktop/GITHUB/Repo/econ490-fall22/_Group Projects/Group_5"
-<<<<<<< HEAD
-=======
-
->>>>>>> group5_week5
 
 // set trace on
 // Create a program
-log using session
+
 cap prog drop group5 
 
 /// regressing treatment and dependent variable, exporting regression table
@@ -22,15 +18,10 @@ program define group5
 	outreg2 using demonstration.doc, replace
 end
 
-<<<<<<< HEAD
 group5 ln_wage age
 
 /// to drop the program: 
+///
 prog drop group5
-=======
-group5 ln_wage race
-translate session.smcl outcome.pdf
-/// to drop the program: 
-/// prog drop group5
->>>>>>> group5_week5
+
 
