@@ -32,3 +32,7 @@ The program drops observations that have missing values for at least one of the 
 ### Part Three: Final Outputs
 
 The program will output the final ANOVA matrix and a box plot of the outcome variable over each group. The results are not stored but appear in the Results portion of the Stata console. Users may save the output by running their own code after running the program.
+
+## Demonstrating the Program
+
+To view a demonstration of how the program runs, run or call the `one_way_anova.do` file, then run or call the `demonstration.do` file. This file will then illustrate a number of uses of the one-way ANOVA program.
