@@ -6,11 +6,7 @@ This week, you will be coding your own survey on SurveyCTO. We are not prescribi
 
 ## Step 1 : Create a Google Sheets Template for SurveyCTO
 
-1. Log into gui2de's SurveyCTO server (https://gui2de.surveycto.com/) with the following login information: 
-
-    - `User: covid19.studentsurvey@gmail.com`
-    - `Passord: pair.mutton.bust.antique`
-    
+1. Log into gui2de's SurveyCTO server (https://gui2de.surveycto.com/) with the login information shared on the class Slack. 
 1. Navigate to the ECON 490 group on the Design tab
 1. Create a new form (give it a name and ID) and select "Download to Google Drive"
 1. Open the file you just created in your Google Drive
