@@ -1,6 +1,8 @@
-global username "/Users/geenapanzitta/Library/CloudStorage/Box-Box/"
+global username "/Users/geenapanzitta/Library/CloudStorage/Box-Box/" 
+// Edit the above with your file path to run the program
 
 cd "${username}ECON490/Week5/"
+//calls the working directory
 
 clear all 
 run program.do
