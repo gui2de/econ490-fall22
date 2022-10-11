@@ -10,7 +10,7 @@ Set your working directory such that it contains the program.do file. Then in th
 run program.do
 
 ## Using the Program
-Run `graphsum sysdata var1 var2`, replacing `sysdata` with the name of the system data, `var1` with the dependent variable, and `var2` with the independent variable.
+Run `graphsum sysdata var1 var2`, replacing `sysdata` with the name of the system data (use the command: "sysuse dir" to browse applicable datasets), `var1` with the dependent variable, and `var2` with the independent variable.
 
 ## Graphs and Matrices
 The scatter plot with a fitted line is saved as `sysdata_scatter_var1_var2.gph`.
