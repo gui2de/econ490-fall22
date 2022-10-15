@@ -272,13 +272,13 @@ clear
 use grant_prop_review_2022.dta, clear
 
 *Make macro of all students
-global students ahs103 am3944 ass95 ato12 bp557 fg443 ft227 glp38 mp1792 nbs56 nd549 oo140 sa1600 scb136 yc577 ynd3
+local students ahs103 am3944 ass95 ato12 bp557 fg443 ft227 glp38 mp1792 nbs56 nd549 oo140 sa1600 scb136 yc577 ynd3
 
 *Rename variables so they're consistent with other variables
 rename (Rewiewer1 Review1Score) (Reviewer1 Reviewer1Score)
 
 *Generate a variable to hold the score a student gave a proposal, if they reviewed it, regardless of which reviewer they were
-foreach i in $students {
+foreach i in `students' {
 	gen score_`i' = .
 	forvalues j = 1/3 {
 		replace score_`i' = Reviewer`j'Score if Reviewer`j' == "`i'"
@@ -286,7 +286,7 @@ foreach i in $students {
 }
 
 *Find the mean and standard deviation by student of all scores
-foreach i in $students {
+foreach i in `students' {
 	quietly sum score_`i' if score_`i' != .
 	gen mean_`i' = r(mean)
 	gen sd_`i' = r(sd)
@@ -298,7 +298,7 @@ forvalues j = 1/3 {
 }
 
 *Find standardized scores for each proposal
-foreach i in $students {
+foreach i in `students' {
 	forvalues j = 1/3 {
 		if Reviewer`j' == "`i'" {
 			replace stand_r`j'_score = (Reviewer`j'Score - mean_`i')/sd_`i'
@@ -310,7 +310,7 @@ foreach i in $students {
 gen average_stand_score = (stand_r1_score + stand_r2_score + stand_r3_score) / 3
 
 *Drop the student variables generated
-foreach i in $students {
+foreach i in `students' {
 	drop score_`i' mean_`i' sd_`i'
 }
 
