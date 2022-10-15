@@ -1,11 +1,13 @@
-global username "/Users/geenapanzitta/Library/CloudStorage/Box-Box/" 
-// Edit the above with your file path to run the program
+global username "/Users/geenapanzitta/Documents/GitHub/econ490-fall22" //EDIT THIS
+// edit the above with your file path to run the program
 
-cd "${username}ECON490/Week5/"
+cd "${username}_Week5/group4"
 //calls the working directory
 
 clear all 
 run program.do
+
+//runs the program with different data sets
 
 graphsum auto price mpg
 
