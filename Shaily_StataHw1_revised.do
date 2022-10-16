@@ -221,13 +221,19 @@ save 18andolder_Pakistan_NID, replace
 /*******************************************************************************
 Q4: GRANT SCORES
 *******************************************************************************/
+*modified code using Yash's comments on my initial code
 use grant_prop_review_2022.dta, clear
 ren Rewiewer1 Reviewer1
-bysort Reviewer1: egen score1_mean_shaily = mean(Review1Score) if Reviewer1 == "sa1600"
-bysort Reviewer2: egen score2_mean_shaily = mean(Reviewer2Score) if Reviewer2 == "sa1600"
-bysort Reviewer3: egen score3_mean_shaily = mean(Reviewer3Score) if Reviewer3 == "sa1600"
+ren Review1Score Reviewer_Score1
+ren Reviewer2Score Reviewer_Score2
+ren Reviewer3Score Reviewer_Score3
+reshape long Reviewer Reviewer_Score, i(proposal_id) j(reviewer_number) 
+bysort Reviewer: egen stand_r_score = std(Reviewer_Score)
+reshape wide Reviewer stand_r_score Reviewer_Score, i(proposal_id) j(reviewer_number) 
+gen average_stand_score = (stand_r_score1 + stand_r_score2 + stand_r_score3) / 3
+gsort -average_stand_score
+gen rank=_n 												
 
-*I spent a lot of time thinking about this problem, and ultimately decided that the best approach would be to see if I could generate the necessary results just based on one reviewer (I chose myselff to be the test case). I was able to generate my own average scores from when I was in the position of all three reviewers, but could not figure out how to average these three scores to generate my actual average score. Once I figure this out, I am hoping to convert this into a loop in order to do the same process to all 16 reviewers, but I also could not figure out how to write this loop since all of the reviewer names are strings and not necessarily in the same order for the 3 reviewer categories. 
 
 
 
