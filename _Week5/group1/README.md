@@ -13,10 +13,6 @@ This repository includes:
 - **demonstration.do**: A .do file that demonstrates a variety of uses of the one-way ANOVA program.
 - **README.md**: This README file providing documentation of the program.
 
-## Explanation of Program
-
-Below is an explanation of how to run the program.
-
 ### Part One: Preparation
 
 Before running the program, make sure that `one_way_anova.do` is saved in a convenient directory. Next, run the `one_way_anova.do` file. You may do this in a number of ways, including by opening and running the .do file or by changing your working directory to the directory where the .do file is stored and running `do one_way_anova` in Stata. Next, you will need to define the inputs to the program. The program accepts three inputs: 1) the name of the built-in data set you would like to use, 2) the variable representing the outcome variable (which must be continuous), and 3) the variable representing the groups you would like to compare the mean of the outcome variable between (which must be categorical).
