@@ -7,7 +7,7 @@
 This program creates a matrix of one-way ANOVA results and a box plot of the outcome variable over each group variable that was used in the ANOVA test. It is not data-specific; the program is generic and the user can apply any dataset that is built into Stata (i.e., that can be called with `sysuse`).
 
 ## Files
-This repository includes: 
+This repository includes:
 
 - **one_way_anova.do**: The one-way ANOVA program in a .do file.
 - **demonstration.do**: A .do file that demonstrates a variety of uses of the one-way ANOVA program.
