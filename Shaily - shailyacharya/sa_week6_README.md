@@ -4,4 +4,4 @@ Google sheets link: https://docs.google.com/spreadsheets/d/1b4koBIfqz6o-yWKMeRnV
 
 SurveyCTO link: https://gui2de.surveycto.com/collect/shaily_week6?caseid=
 
-My survey is geared to collect data on the Georgetown undergraduate core curriculum. 
+My survey is geared to collect data on the Georgetown undergraduate core curriculum. In order to complete the survey, you must be a Georgetown student
