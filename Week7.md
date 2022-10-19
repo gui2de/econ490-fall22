@@ -11,7 +11,7 @@ You will add the following three features to your survey :
 - Language label for Stata labeling (language "stata")
 - Encryption
 
-For case management, you will first need to create a case database for your survey, which is like a sample frame or a listing of people expected to fill out the survey. It doesn't have to be long - a minimum of 10 cases is sufficient (you are welcome to make it longer though, if it makes sense for your survey).
+For **case management**, you will first need to create a case database for your survey, which is like a sample frame or a listing of people expected to fill out the survey. It doesn't have to be long - a minimum of 10 cases is sufficient (you are welcome to make it longer though, if it makes sense for your survey).
 
 The case database must :
 - be a csv
@@ -28,9 +28,9 @@ You will use case management features in your form to allow for tracking how man
       - `num_calls` tracking the number of calls (or visits) that were made for this respondent
       - `last_survey_status` tracking the status of the last survey for this respondent
 
-For encryption, you will use the keys we have created in class. The keys will not be shared in the class repo but on slack, and should be stored locally on your computer outside of the class repo. Remember that any variable that you are using to push/pull data to and from must be marked as Publishable in your form once your form is encrypted. Also note that because SurveyCTO doesn't allow users to encrypt a form after it has been deployed, you will have to delete your form from the SurveyCTO server and upload it again using that same Google Sheet.
+For **encryption**, you will use the keys we have created in class. The keys will not be shared in the class repo but on slack, and should be stored locally on your computer outside of the class repo. In order to encrypt your form, copy the PUBLIC key in the appropriate column in the Settings tab of your form. You will use the private key only to be able to download your form data. Remember that any variable that you are using to push/pull data to and from must be marked as Publishable in your form once your form is encrypted. Also note that because SurveyCTO doesn't allow users to encrypt a form after it has been deployed, you will have to delete your form from SurveyCTO and upload it again using that same Google Sheet.
 
-For the stata template, once you have defined a new language in your form (both in the survey tab and the choices tab), you can download it from the surveycto by navigating to your form in the Design tab, click Download and select Stata .do template.
+For the **stata template**, once you have defined a new language in your form (both in the survey tab and the choices tab), you can download it from the surveycto by navigating to your form in the Design tab, click Download and select Stata .do template.
 
 ## Step 2 : Upload it to SurveyCTO and test it by submitting mock observations
 
