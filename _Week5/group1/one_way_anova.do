@@ -2,18 +2,12 @@
 Week 5 Assignment
 Program .do file */
 
-* Explanation of ANOVA: https://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_HypothesisTesting-ANOVA/BS704_HypothesisTesting-Anova3.html
-* Note that this function does NOT run tests of assumptions needed for ANOVA; should run those tests in Stata before using this program
-
 capture program drop one_way_anova
 prog def one_way_anova
 	
-	* Define arguments
 	args data_set outcome_var group_var
 	
-	* Load data set
-	clear
-	sysuse `data_set'
+	sysuse `data_set', clear
 	
 	* Count total length of data set, excluding missing values
 	quietly count if ~missing(`group_var') & ~missing(`outcome_var')
