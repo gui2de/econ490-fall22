@@ -2,6 +2,11 @@ I developed a survey of Georgetown students/alumni regarding their coursework in
 
 Case management file: nbs_week7_case_data_set.csv
 
+Survey Stata .do file: import_nbs_week6.do
+Survey response data in .csv format (as of last update): NBS_Week_6_Survey_WIDE.csv
+Survey response data in .dta format (produced by running .do file): NBS_Week_6_Survey.dta
+
+
 Survey spreadsheet: https://docs.google.com/spreadsheets/d/1FgDB12Hy-yQu1YJfpqSidnRJVNnUb6A4ac8CyW9zA1o/edit?usp=sharing
 
 SurveyCTO form: https://gui2de.surveycto.com/collect/nbs_week6?caseid=nbsXX
