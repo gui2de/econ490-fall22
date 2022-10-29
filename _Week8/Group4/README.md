@@ -30,6 +30,8 @@ gen `income_k` = 2(`experience`) + .5(`age`) -.3(`dist_from_city`) + 1(`family_s
 
 reg `income_k` `age` `educ_yrs` `dist_from_city` `family_size` `experience`, cluster(`state`)
 
-# The results are then stored and returned as local variables. 
+# The results are then stored and returned as local variables.
 
 # `results.do` Overview
+
+![Income Graph](income_sim_scatter.png)
