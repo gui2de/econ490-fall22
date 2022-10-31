@@ -15,10 +15,15 @@ This is a CSV of the data used to create the figures below. Please peruse at you
 
 ## Histogram of difference between beta and beta hat
 This shows the distribution of the difference beta minus beta hat for all 100 loops. We can see the mean is zero, which shows the difference between predicted IV estimator and the actual mean impact is usually around 0. This result suggests our IV estimator usually serves as an accurate estimate of the actual impact.
+
 ![Histogram_of_Difference_between_Beta_and_Beta_Hat.png](Histogram_of_Difference_between_Beta_and_Beta_Hat.png "Histogram of difference between beta and beta hat")
 
 ## Summary of beta and beta hat
 This shows the summary statistics for bet and beta hat. The means are very, very close. However, the standard deviation of beta hat is substantially higher than that of beta. We hypothesize the result is caused by the IV estimator adjusting to outliers in the data, but we are unsure. We would appreciate any input from reviewers.
 
+![Summary_of_Beta_and_Beta_Hat.png](Summary_of_Beta_and_Beta_Hat.png "Summary of beta and beta hat")
+
 ## Mean difference converges to 0
 This is our coolest graph. We can see that, as the number of trials increases, the mean difference between beta and beta hat approaches 0. This result confirms that beta hat is a consistent estimator of the actual mean impact, beta.
+
+! [Mean_Difference_Converges_to_0.png] (Mean_Difference_Converges_to_0.png "Mean difference converges to 0")
