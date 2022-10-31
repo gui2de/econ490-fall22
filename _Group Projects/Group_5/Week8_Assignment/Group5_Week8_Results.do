@@ -1,6 +1,6 @@
 clear all
 
-cd "/Users/nbs/Documents/Georgetown/Semester 5/1 Courses/ECON 490/Assignments/Week8" // User must change to appropriate path
+cd "/Users/nbs/Documents/Georgetown/Semester 5/1 Courses/ECON 490/econ490-fall22/_Group Projects/Group_5/Week8_Assignment" // User must change to appropriate path
 
 run "Group5_Week8_Simulation.do" // Execute our simulation file
 
@@ -34,7 +34,7 @@ sum beta beta_hat
 *Histogram of difference between beta and beta_hat
 gen difference = beta - beta_hat
 hist difference, freq xtick(-1.5(0.1)1.5) xlabel(-1.5(0.5)1.5) xtitle("Difference between {&beta} and `=ustrunescape("\{&beta}\u0302")'") bin(30) graphregion(color(white))
-graph export "Histogram_of_Difference_between_Beta_and_Beta_Hat.png", as(png) name("Graph")
+graph export "Histogram_of_Difference_between_Beta_and_Beta_Hat.png", as(png) name("Graph") replace
 
 *Generate mean difference variable
 gen mean_difference = .
@@ -48,4 +48,7 @@ forval j = 1/100 { // Loop through each trial
 
 *Graph: mean of difference between beta and beta_hat converges to 0 as N goes to infinity
 scatter mean_difference i, ytitle("Mean difference between {&beta} and `=ustrunescape("\{&beta}\u0302")'") xtitle("Trials completed") graphregion(color(white))
-graph export "Mean_Difference_Converges_to_0.png", as(png) name("Graph")
+graph export "Mean_Difference_Converges_to_0.png", as(png) name("Graph") replace
+
+*Export simulation data as CSV
+export delimited using "Group5_Week8_Data.csv", replace
