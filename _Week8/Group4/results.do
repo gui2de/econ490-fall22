@@ -30,3 +30,5 @@ foreach i in `vars' {
 
 graph combine scatter_b_age scatter_b_educ_yrs scatter_b_dist_from_city scatter_b_family_size scatter_b_experience, title("Coefficients vs. Sample Size")
 graph export "income_sim_scatter.png", replace
+
+export delimited using "income_sim_data.csv", replace
