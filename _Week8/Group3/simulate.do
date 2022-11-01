@@ -2,9 +2,11 @@ cap prog drop schools
 prog def schools, rclass
 	syntax, rho(real) // input is intracluster correlation
 	
+	clear all
+	
 	set obs 200 // 200 clusters
 	gen cluster_num = _n
-	gen obs_per_cluster = 75 + runiform() // randomizing number of observations per cluster (school)
+	gen obs_per_cluster = 75 + 10*runiform() // randomizing number of observations per cluster (school)
 	expand obs_per_cluster
 	by cluster_num, sort: gen id = _n
 	
