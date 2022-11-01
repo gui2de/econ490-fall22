@@ -5,8 +5,7 @@ use "/Users/abigailorbe/Library/CloudStorage/Box-Box/Econ490_Fall2022/Week4/04_a
 	bysort pixel: egen minpayout = min(payout) 
 	bysort pixel: egen maxpayout = max(payout)
 	generate pixel_consistent = maxpayout-minpayout
-	drop minpayout
-	drop maxpayout /// drop variables can all be in one line, makes the code a bit more elegant
+	drop minpayout maxpayout
 	
 	//b
 	sort village
@@ -14,13 +13,12 @@ use "/Users/abigailorbe/Library/CloudStorage/Box-Box/Econ490_Fall2022/Week4/04_a
 	bysort village: egen npixels = sum(unique)
 	gen pixel_village = 0 if npixels == 1
 	replace pixel_village = 1 if npixels > 1
-	drop unique
-	drop npixels
+	drop unique npixels
 	
 	//c 
 	gen hh_cat = 1 if pixel_village == 0
 	replace hh_cat = 2 if pixel_village == 1 & pixel_consistent == 0
-	replace hh_cat = 3 if pixel_village == 1 & pixel_consistent == 1 /// your code doesn't return any ==3 values. Are you sure it's correct? You also forgot to create a list of all hhid's where ==2.
+	replace hh_cat = 3 if pixel_village == 1 & pixel_consistent == 1
 
 // Save
 cd "/Users/abigailorbe/Documents/repos/econ490-fall22/Abigail - abigailorbe/Week 4/2_outputs"
@@ -93,14 +91,11 @@ replace trans_cni = abs(trans_cni)
 // Dropping table21 variable because it doesn't add any information
 drop table21
 
-/////// This is very well done and clear. Did you forget to retain district names in your dataset or opted not to?
-
-
 // Export
 cd "/Users/abigailorbe/Documents/repos/econ490-fall22/Abigail - abigailorbe/Week 4/2_outputs"
 save question3
 
-********** Question 4 /// This works, but not sure it needed to be this long or involve any merging. Will be interesting to discuss this in class.
+********** Question 4 ///
 // Set directories and make variable names consistent
 cd "/Users/abigailorbe/Library/CloudStorage/Box-Box/Econ490_Fall2022/Week4/04_assignment/data/"
 use grant_prop_review_2022.dta, clear
