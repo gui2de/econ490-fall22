@@ -30,4 +30,4 @@ This shows the summary statistics for bet and beta hat. The means are very, very
 ## Mean difference converges to 0
 This is our coolest graph. We can see that, as the number of trials increases, the mean difference between beta and beta hat approaches 0. This result confirms that beta hat is a consistent estimator of the actual mean impact, beta.
 
-![Mean_Difference_Converges_to_0.png](Mean_Difference_Converges_to_0.png "Mean difference converges to 0")
+![Mean_Difference_Converges_to_0_Updated.png](Mean_Difference_Converges_to_0_Updated.png "Mean difference converges to 0 (95% CI)")

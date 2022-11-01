@@ -95,21 +95,37 @@ replace ts_actual = ts_charter if attend==1 // Actual test score is the hypothet
 replace ts_actual = ts_public if attend==0 // Actual test score is hypothetical test score at public if child attends public
 la var ts_actual "Child's actual test score"
 
-*Calculate statistical property
+///*** Calculate statistical property ***///
 
+*IV regression
 reg ts_actual attend (admitted), r  // IV regression, where admitted is the instrument, attend is the endogenous variable, and ts_actual is our dependent variable; note full sample of data is used here
+
+*Estimated impact
 gen beta_hat = r(table)[1,1] // Extracts coefficient from regression
 la var beta_hat "Mean predicted change in child's test score from attending charter, relative to if child had attended public" // The latter is a hypothetical score we generated but do NOT utilize here
 
+*Estimated impact: 95% confidence intervals
+gen beta_hat_c0 = r(table)[5,1]
+la var beta_hat_c0 "Minimum of beta hat 95% CI"
+
+gen beta_hat_c1 = r(table)[6,1]
+la var beta_hat_c1 "Maximum of beta hat 95% CI"
+
+*Actual impact
 gen beta = ts_actual - ts_public if attend==1 // Note only subsample of charter attendees is used
 qui sum beta
 replace beta = r(mean)
 la var beta "Mean actual change in child's test score from attending charter, relative to if child had attended public" // The latter is a hypothetical score that we DO utilize here
 
-local beta = beta // Store beta variable as local; note all same value
-local beta_hat = beta_hat // Store beta_hat variable as local; note all same value
+*Outputs
+local beta = beta // Store beta variable as local
+local beta_hat = beta_hat // Store beta_hat variable as local
+local beta_hat_c0 = beta_hat_c0 // Store beta_hat_c0 as local
+local beta_hat_c1 = beta_hat_c1 // Store beta_hat_c1 as local
 
 return scalar beta = `beta' // Return scalar beta, per requirements of rclass program
 return scalar beta_hat = `beta_hat' // Return scalar beta_hat, per requirements of rclass program
+return scalar beta_hat_c0 = `beta_hat_c0' // Return scalar beta_hat_c0, per requirements of rclass program
+return scalar beta_hat_c1 = `beta_hat_c1' // Return scalar beta_hat_c1, per requirements of rclass program
 
 end
