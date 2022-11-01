@@ -36,7 +36,7 @@ reg `income_k` `age` `educ_yrs` `dist_from_city` `family_size` `experience`, clu
 
 # Our results.do file runs the simulate.do file to load the simulate program and it sets a seed that we generated using random.org.
 # It runs the `income_sim` program with different sample sizes, running each 100 times and storing the results in a matrix, `results`.
-# It saves the matrix to the data and creates scatter plots of sample size vs coefficients, showing how as the sample size increases, the coefficients converge to their true values. It then combines the scatter plots into one graph and exports the graph. 
+# It saves the matrix to the data and creates scatter plots of sample size vs coefficients, showing how as the sample size increases, the coefficients converge to their true values. It then combines the scatter plots into one graph and exports the graph. It then exports the data as a csv. 
 
 
 ![Income Graph](income_sim_scatter.png)
