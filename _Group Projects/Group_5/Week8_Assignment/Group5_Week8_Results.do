@@ -14,7 +14,7 @@ forvalues i = 1/100 {
 	
 	clear // Clear from last loop
 	
-	qui charter_simulation // Our r-class program is called simulation
+	qui charter_simulation // Our r-class program is called charter_simulation
 	
 	mat results = nullmat(results)\[`i',r(beta),r(beta_hat)] // Append loop's results to bottom of matrix
 
