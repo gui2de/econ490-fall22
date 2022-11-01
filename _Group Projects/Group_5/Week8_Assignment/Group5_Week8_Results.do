@@ -1,6 +1,8 @@
 clear all
 
-cd "/Users/nbs/Documents/Georgetown/Semester 5/1 Courses/ECON 490/econ490-fall22/_Group Projects/Group_5/Week8_Assignment" // User must change to appropriate path
+global path "/Users/benjamintu/Documents/Github"
+
+cd "${path}/econ490-fall22/_Group Projects/Group_5/Week8_Assignment"
 
 run "Group5_Week8_Simulation.do" // Execute our simulation file
 
