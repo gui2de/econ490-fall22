@@ -7,7 +7,7 @@ cap mat drop results
 foreach i in 0 .25 .5 .75 1 {
 	forv j = 1/100 {
 		clear
-		quietly schools, rho(0.5)
+		quietly schools, rho(`i')
 		mat results = nullmat(results) \[`i', `icc', `g' `design']
 	}
 }
