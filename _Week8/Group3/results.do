@@ -1,37 +1,38 @@
 clear all
-set seed 341006 // random
-do "simulate.do" // loads our schools program
+
+* Using code I saw in Group 4's code to set the working directory!
+
+global username "/Users/anton/OneDrive/Documents/Georgetown/ECON/ECON490" // you have to change this line
+cd "${username}/econ490-fall22/_Week8/Group3"
+
+run "simulate.do" // loads our schools program
+set seed 341006 // randomization seed
+
 cap mat drop results
 
-// running simulation - 100 runs each for rho = 0, .25, .5, .75, and 1
-foreach i in 0 .25 .5 .75 1 {
-	forv j = 1/100 { 
+// running simulation - 100 runs each for rho = .01, .25, .5, .75, and .99
+// note: issues with "convergence not achieved" for rho(1) and rho(0), so we use rho(.99) and rho(.01) instead.
+foreach i in .01 .25 .5 .75 .99 { 		// loop over parameter index (icc)
+	forv j = 1/100 { 		// # of iterations/runs
 		clear
 		quietly schools, rho(`i')
-		mat results = nullmat(results) \ [`i', icc, `g', `design']
+		mat results = nullmat(results) \ [`j', `i', icc, g, design]
 	}
 }
 
-mat colnames results = i icc g design
+mat colnames results = j rho icc g design // change matrix column names
 
 clear
+svmat results, names(col) // stores mat columns as new variables
 
-svmat results, names(col)
+* scatter plot
+scatter design icc, name("design_icc_scatter", replace)
+// larger icc corresponds to larger design effect
 
-local vars icc g  // remove design?
+graph export "week8_design_icc_scatter.png", replace
 
-foreach `i' in `vars' {
-	scatter `i' design, name ("graph_`i'", replace)
-}
+* not sure what to do about CSV 'statistical table'
 
-graph combine graph_icc graph_g
+// export ...
 
-graph display
-
-// Now we have to do something with these outputs
-
-// Ideas:
-* plot of icc and design to show how larger ICC corresponds to larger design effect
-* plot of g and design (since large cluster sizes often inc. design effect)
-
-* dot plot showing data values by school (cluster) at different ICC ?
+* another idea: dot plot showing data values by school (cluster) at different ICC ?
