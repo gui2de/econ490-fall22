@@ -107,10 +107,10 @@ program define salary_simulate, rclass // define an r-class program so that the 
 	regress salary gpa m_k u_i e_ij
 	local b_gpa = _b[gpa]
 	local se_gpa = _se[gpa]
+	local sample_size = _N
 
 	// return statistics (coefficient on GPA and its standard error)
 	return scalar b_gpa = `b_gpa'
 	return scalar se_gpa = `se_gpa'
-	return scalar sample_size = _n // NOTE: we may not have to return sample size
-
+	return scalar sample_size = `sample_size'
 end
