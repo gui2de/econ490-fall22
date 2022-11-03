@@ -2,7 +2,7 @@ clear all
 
 * Using code I saw in Group 4's code to set the working directory!
 
-global username "/Users/anton/OneDrive/Documents/Georgetown/ECON/ECON490" // you have to change this line
+global username "/Users/anton/OneDrive/Documents/Georgetown/ECON/ECON490" // you have to change the line above
 cd "${username}/econ490-fall22/_Week8/Group3"
 
 run "simulate.do" // loads our schools program
@@ -16,7 +16,7 @@ foreach i in .01 .25 .5 .75 .99 { 		// loop over parameter index (icc)
 	forv j = 1/100 { 		// # of iterations/runs
 		clear
 		quietly schools, rho(`i')
-		mat results = nullmat(results) \[`i', `icc', `g' `design']
+		mat results = nullmat(results) \ [`j', `i', icc, g, design]
 	}
 }
 
@@ -31,8 +31,6 @@ scatter design icc, name("design_icc_scatter", replace)
 
 graph export "week8_design_icc_scatter.png", replace
 
-* not sure what to do about CSV 'statistical table'
-
-// export ...
+export delimited week8_rho_icc_design, replace
 
 * another idea: dot plot showing data values by school (cluster) at different ICC ?

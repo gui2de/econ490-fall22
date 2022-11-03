@@ -70,3 +70,5 @@ Then we export this scatterplot.
 ![Scatterplot of icc and design effect](week8_design_icc_scatter.png)
 
 We also export a csv of the simulation's output.
+
+![csv of simulation's output](week8_rho_icc_design.csv)
