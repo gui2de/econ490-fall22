@@ -1,17 +1,33 @@
-cap prog drop income_sim
+cap prog drop projectdata_sim
 
-prog define income_sim, rclass
+prog define projectdata_sim, rclass
 
 clear
 
 syntax anything
-set obs `anything'
-//set obs 10000
-//gen state = 1+mod(_n,10)
-//sort state
-gen state= trunc(rnormal(6,1))
-drop if state<1 //Testing varied state size per revisions.
+
+// if `anything' == "biased" {
+//	
+// }
+//
+// if `anything' != "biased" {
+//	
+// }
+
+// set obs 20000
+set obs 1000 //for testing
+
+clear
+set obs 112
+generate school_id = _n
+generate school_size = trunc(rnormal(179,5))
+//generate fixed effect
+expand school_size
+generate student_id = _n
+
+
 gen id = _n
+gen school 
 gen age = rnormal(35,5)
 drop if age < 18
 gen educ_yrs = trunc(rnormal(12+(state/2),1))
