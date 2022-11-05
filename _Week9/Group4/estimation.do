@@ -88,3 +88,6 @@ return scalar b_ap_eq = _b[eq]
 }
 
 end
+
+projectdata_sim "unbiased"
+dis `r(b_mh_treat)'
