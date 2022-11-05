@@ -50,7 +50,7 @@ if `anything' == "biased" {
 reg mental_health_scale treat avg_par_age avg_par_educ_yrs single_parent number_of_siblings family_income_cny_k, cluster(school_id)
 
 return scalar b_mh_treat = _b[treat]
-return scalar b_mh_par_educ_yrs = _b[avg_par_educ_yrs]
+return scalar b_mh_avg_par_educ_yrs = _b[avg_par_educ_yrs]
 return scalar b_mh_single_parent = _b[single_parent]
 return scalar b_mh_number_of_siblings = _b[number_of_siblings]
 return scalar b_mh_family_income_cny_k = _b[family_income_cny_k]
@@ -65,7 +65,7 @@ return scalar b_ap_family_income_cny_k = _b[family_income_cny_k]
 }
 
 
-if `anything' != "biased" {
+if `anything' == "unbiased" {
 	
 	
 reg mental_health_scale treat avg_par_age avg_par_educ_yrs single_parent number_of_siblings family_income_cny_k eq, cluster(school_id)
