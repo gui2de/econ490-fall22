@@ -79,7 +79,7 @@ program define salary_simulate, rclass // define an r-class program so that the 
 	generate stratum_peduc = 2
 	replace stratum_peduc = 1 if p1_educ < 16 & p2_educ < 16
 	replace stratum_peduc = 3 if p1_educ >= 16 & p2_educ >= 16
-	label define stratum2 1 "neither parent graduated four-year college" 2 "at least one parent graduated four-year college" ///
+	label define stratum2 1 "neither parent graduated four-year college" 2 "only one parent graduated four-year college" ///
 	3 "both parents graduated four-year college"
 	label values stratum_peduc stratum2
 	
