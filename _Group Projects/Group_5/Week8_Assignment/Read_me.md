@@ -5,14 +5,14 @@
 We simulate data for our ECON 490 project studying DC charter schools. We use the DC system of admission by random lottery to charters as an instrument to estimate the impact of attending a charter of student test scores. We have 6 files, which have robust comments explaining each line of code.
 
 ## Group5_Week8_Simulation.do
-This is our rclass program simulation. We generate 5,000 students who apply to the My DC Lottery for PK3. Each child has an innate ability, measured by IQ, and a designated local public school. The child chooses to apply to exactly one charter school at random. Each school, public and charter, is randomly assigned a quality score. Consistent with the literature, the distribution of charter quality scores is one standard deviation above that of local public schools. We define the child's hypothetical test score attending a school as a Cobb-Douglas education production function of the child's IQ and school quality.
+This is our rclass program simulation. We generate 5,000 students who apply to the My DC Lottery for PK3. Each child has an different innate ability, and a designated local public school. The child chooses to apply to exactly one charter school at random among all schools with equal probability. Each school, public and charter, is randomly assigned a quality score. Consistent with the literature, the distribution of charter quality scores is one standard deviation above that of local public schools. We define the child's hypothetical test score attending a school as a Cobb-Douglas education production function of the child's ability and school quality.
 
 For schools where applicants exceeds capacity, a random lottery allocates seats. An admitted child chooses to attend the charter school if his/her test scores would be higher there than at the local public school. Children who lose the lottery and those whose test scores would be higher at their public schools choose to attend public schools.
 
 We then run an IV regression of test scores on a dummy variable for attending a charter, where admission to a charter serves as an instrument. The coefficient, beta hat, on the attend dummy equals the predicted impact of attending a charter on test scores. Next, we calculate the mean of the actual impact of attending a charter on test scores relative to what scores would have been at public, which we call beta.
 
 ## Group5_Week8_Results.do
-We loop through our simulation 100 times then import the data for beta and beta hat into Stata's memory. Then, we find the difference between beta and beta hat for each loop iteration. Next, we calculate a quasi cumulative mean variable called mean_difference, where each mean_difference[j] is the mean of the differences from loop 1 through loop j. Finally, we create some illustrative graphs and tables.
+We loop through our simulation 10,000 times then import the data for beta and beta hat into Stata's memory. Then, we find the difference between beta and beta hat for each loop iteration. Next, we calculate a quasi cumulative mean variable called mean_difference, where each mean_difference[j] is the mean of the differences from loop 1 through loop j. Finally, we create some illustrative graphs and tables.
 
 ## Group5_Week8_Data.csv
 This is a CSV of the data used to create the figures below. Please peruse at your pleasure.
