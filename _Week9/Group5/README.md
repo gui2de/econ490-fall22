@@ -32,7 +32,6 @@ These facts, combined with the consistency of our results, support the assertion
 
 | variable | observations | mean | sd | min | max |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-|---|---|---|---|---| --- |
 | True ATE | 100 | 2.461096437 | 0.157093987 | 1.997508049 | 2.842939138 |
 | Biased ATE | 100 | 9.365381703 | 0.616475542 | 7.300717354 | 10.84226894 |
 | MSN | 100 | 149.4 | 20.31469588 | 109 | 228 |
