@@ -44,4 +44,4 @@ These facts, combined with the consistency of our results, support the assertion
 
 The graph shows how the biased ATE and the true ATE change as the number of trials (above called "iterations") approaches infinity. We can see both ATEs are, in fact, consistent, as they both appear to converge to finite values. However, the biased ATE is clearly different from the true ATE. We can confirm the statistical significance of this difference by inspecting the biased ATE's 95% confidence intervals, as depicted. the confidence intervals clearly show no overlap at point with the true ATE.
 
-![Biased and True ATEs as N Approaches Infinity](biased_and_true_ATEs_as_N_approaches_infinity.png "Biased and True ATEs as N Approaches Infinity")
+![Biased and True ATEs as N Approaches Infinity (95% CI)](biased_and_true_ATEs_as_N_approaches_infinity_(95%_CI).png "Biased and True ATEs as N Approaches Infinity (95% CI)")
