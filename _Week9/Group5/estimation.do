@@ -97,6 +97,40 @@ replace ts_actual = ts_charter if attend==1 // Actual test score is the hypothet
 replace ts_actual = ts_public if attend==0 // Actual test score is hypothetical test score at public if child attends public
 la var ts_actual "Child's actual test score"
 
+*Open spots
+egen open_spots = sum(attend), by(charter_id) // Number of students attending each charter
+replace open_spots = capacity - open_spots // Open spots at each charter
+la var open_spots "Open spots available at charter"
+
+*Waitlist
+egen waitlist = count(attend) if attend==0 & ts_charter>=ts_public, by(charter_id) // Waitlist is defined as lottery losers who still want to attend charters (i.e., higher test scores attending charters than public)
+
+*Waitlist admission (no lottery)
+replace attend = 1 if open_spots>=waitlist // When there are more spots than waitlisted students, all are granted admission
+
+*Update waitlist
+drop waitlist // Drop previous variable
+egen waitlist = count(attend) if attend==0 & ts_charter>=ts_public, by(charter_id) // Regenerate new waitlist size after no-lottery waitlist admissions round
+
+*Update open spots
+drop open_spots // Drop previous variable
+egen open_spots = sum(attend), by(charter_id) // Regenerate new number of attending students after no-lottery waitlist admissions round
+replace open_spots = capacity - open_spots // Convert to open spots
+
+*Waitlist admission (random lottery)
+gen tempvar = .
+replace tempvar = rnormal() if attend==0 & waitlist>0 & open_spots>0 // Randomly assign tempvar to lottery losers on waitlist for charters with open spots
+gen waitlist_rank = .
+la var waitlist_rank "Randomly generated waitlist rank"
+bysort charter_id (tempvar): replace waitlist_rank = _n if attend==0 & waitlist>0 & open_spots>0 // Sort tempvar in ascending order for waitlisted students, and then fill in waitlist rank
+drop tempvar // Temporary variable no longer needed
+replace attend = 1 if waitlist_rank<=open_spots & attend==0 & waitlist>0 & open_spots>0 // Lottery losers on waitlists whose ranks are lower than open spots available attend charters
+drop waitlist open_spots // No longer needed
+
+*Update open spots
+egen open_spots = sum(attend), by(charter_id) // Regenerate new number of attending students after no-lottery waitlist admissions round
+replace open_spots = capacity - open_spots // Convert to open spots
+
 ///*** TRUE EFFECT ***///
 
 *Estimate true ATE

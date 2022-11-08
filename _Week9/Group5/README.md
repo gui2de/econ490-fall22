@@ -5,7 +5,11 @@
 We simulate data for our ECON 490 project studying DC charter schools. We use the DC system of admission by random lottery to charters as an instrument to estimate the impact of attending a charter of student test scores.
 
 ## estimation.do
-This is our r-class program simulation. We generate 5,000 students who apply to the My DC Lottery for PK3. Each child has an innate ability and a designated local public school. The child applies to exactly one charter, which he/she chooses at random from amongst all charters with equal probability. Each school, public and charter, is randomly assigned a quality score. To reflect distributional differences, we draw public quality scores from a normal distribution with mean 100 and standard deviation 15, while charter scores are drawn from a normal distribution with the same standard deviation but mean of 105. We define the child's hypothetical test score attending a school as a Cobb-Douglas education production function of the child's innate ability and school quality. For schools where applicants exceeds capacity, a random lottery allocates seats. An admitted child chooses to attend the charter school if his/her test scores would be higher there than at the local public school. Children who lose the lottery and those whose test scores would be higher at their public schools choose to attend public schools.
+This is our r-class program simulation. We generate 5,000 students who apply to the My DC Lottery for PK3. Each child has an innate ability and a designated local public school. The child applies to exactly one charter, which he/she chooses at random from amongst all charters with equal probability. Each school, public and charter, is randomly assigned a quality score. To reflect distributional differences, we draw public quality scores from a normal distribution with mean 100 and standard deviation 15, while charter scores are drawn from a normal distribution with the same standard deviation but mean of 105. We define the child's hypothetical test score attending a school as a Cobb-Douglas education production function of the child's innate ability and school quality.
+
+For schools where applicants exceeds capacity, a random lottery allocates seats. An admitted child chooses to attend the charter school if his/her test scores would be higher there than at the local public school. Children who lose the lottery and those whose test scores would be higher at their public schools choose to attend public schools.
+
+After the lottery admission round, there is a waitlist admission round. Students on the waitlist are defined as those who lost the admission lottery and whose test scores would be higher attending charter than public. For charters with more open spots than waitlisted students, all waitlisted students are admitted. For charters with more waitlisted students than open spots, another random admission lottery is conducted, and all winners ultimately choose to attend charters (by virtue of how we defined waitlist).
 
 We define the true average treatment effect (ATE) as the effect of attending charters on test scores across all 5,000 children in our sample. The true ATE is simply the mean of the individual treatment effects (ITE) across all children (i.e., the difference between each child's test score attending charter and his/her test score attending public). It is mathematically equivalent to say the true ATE = mean(ts_charter) - mean(ts_public). We estimate the biased ATE using an IV regression of test scores on a dummy variable for attending a charter, where admission to a charter serves as an instrument. The regression coefficient represents the ATE across all students *who actually attend charters*, i.e., students who were admitted *and* who choose to attend (because their test scores would be higher attending charters than public).
 
@@ -26,15 +30,15 @@ Lastly, we generate cumulative true ATEs, biased ATEs, and corresponding confide
 
 The mean of the true ATE is *much* smaller than that of the biased ATE. The true ATE is, in theory, a point estimate, but we see variation in the empirical distribution of individual effects. We can confirm the statistically significant difference between the biased ATE and the true ATE by examining the sd column, which shows the standard errors for the biased ATE.
 
-The table also shows the mean of the minimum sample size is 149 study subjects. There is some variation in this number across samples. However, even the maximum, 228, is far below the 5,000 students each simulation iteration models. For this reason, we can expect each iteration to have a 5% significance level and 0.8 power (or better).
+The table also shows the mean of the minimum sample size is 148 study subjects. There is some variation in this number across samples. However, even the maximum, 202, is far below the 5,000 students each simulation iteration models. For this reason, we can expect each iteration to have a 5% significance level and 0.8 power (or better). We choose these levels because they seemed pretty standard in the econometric literature.
 
 These facts, combined with the consistency of our results, support the assertion that the biased ATE is, in fact, biased.
 
 | variable | observations | mean | sd | min | max |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| True ATE | 100 | 2.461096437 | 0.157093987 | 1.997508049 | 2.842939138 |
-| Biased ATE | 100 | 9.365381703 | 0.616475542 | 7.300717354 | 10.84226894 |
-| MSN | 100 | 149.4 | 20.31469588 | 109 | 228 |
+| True ATE | 100 | 2.474053562 | 0.136878934 | 2.101190567 | 2.786491394 |
+| Biased ATE | 100 | 50.77286856 | 10.38877806 | 30.06402397 | 84.83255768 |
+| msn | 100 | 147.99 | 16.76847391 | 113 | 202 |
 
 ## Graph: Biased ATE is, in fact, biased
 
