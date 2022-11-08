@@ -106,7 +106,7 @@ la var open_spots "Open spots available at charter"
 egen waitlist = count(attend) if attend==0 & ts_charter>=ts_public, by(charter_id) // Waitlist is defined as lottery losers who still want to attend charters (i.e., higher test scores attending charters than public)
 
 *Waitlist admission (no lottery)
-replace attend = 1 if open_spots>=waitlist // When there are more spots than waitlisted students, all are granted admission
+replace attend = 1 if open_spots>=waitlist // New seats become available when students who would achieve higher test scores attending public schools withdraw from the selection process. When there are more spots than waitlisted students, all are granted admission
 
 *Update waitlist
 drop waitlist // Drop previous variable
