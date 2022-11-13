@@ -1,14 +1,18 @@
 ********************************************************************************
 * Econ 490: Week 10
 * Abigail Orbe
-* Nov 13th, 2022
+* Nov 14th, 2022
 ********************************************************************************
 ** Basic Setup
 clear 
 set seed 09012018
 set more off
 
+// Change to align with your directory
 global user "/Users/abigailorbe/Library/CloudStorage/Box-Box"
+
+// Change to align with where you'd like the outputs to be exported
+global export "/Users/abigailorbe/Documents/repos/econ490-fall22/Abigail - abigailorbe/Week10/outputs/"
 
 ********************************************************************************
 * Question 1
@@ -55,6 +59,9 @@ merge m:1 department using `density'
 tabulate department if _merge == 1 // all observations in civ_section0 are matched
 tabulate department if _merge == 2 // there is one district not in the civ_section0 data
 
+// Export
+cd "$export"
+export delimited 01_civ, replace
 ********************************************************************************
 * Question 2
 ********************************************************************************
@@ -85,6 +92,9 @@ bysort group: egen total_enum_distance = total(dist_next)
 tabulate total_enum_distance // all enumerators are walking under 2 miles
 summarize total_enum_distance // enumerators are walking under 1 mile on average
 
+// Export
+cd "$export"
+export delimited 02_enumerator, replace
 ********************************************************************************
 * Question 3
 ********************************************************************************
@@ -167,7 +177,6 @@ gen ward_type = 1
 // Adding these pseudo-identical matches to our tempfile of matched wards
 keep region district ward_10 ward_15 ward_type
 append using `matched'
-duplicates drop // by the nature of our m:m merge, duplicates will be created, which we want to drop
 tempfile allmatched
 save `allmatched'
 
@@ -207,3 +216,7 @@ scalar only2015 = r(N)
 display "Number of wards in 2010: " bothyears + only2010
 display "Number of wards in 2015: " bothyears + only2015
 ***** 3,333 wards are either found in both 2015 and 2010 OR only found in 2010, confirming the number of wards we know existed in 2010. Similarly, 3,944 wards are either found in both 2015 and 2010 OR only found in 2015, confirming the number of wards we know existed in 2015. Thus, we have reason to believe that our categorization of the wards is correct.
+
+// Export
+cd "$export"
+export delimited 03_wards, replace
