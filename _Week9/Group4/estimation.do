@@ -1,4 +1,9 @@
-
+********************************************************************************
+* ECON 491
+* Week 9 - Estimation
+* Group 4
+* November 13, 2022
+********************************************************************************
 
 cap prog drop projectdata_sim
 
@@ -6,88 +11,89 @@ prog define projectdata_sim, rclass
 
 clear
 
+********************************************************************************
+* setting up inputs
+********************************************************************************
+
+{
+	
 syntax anything
+local bias: word 1 of `anything' //a dummy for whether the results are biased or not
+local cluster_size: word 2 of `anything' //inputting cluster size
+local number_of_schools: word 3 of `anything' //inputting number of schools
+local te: word 4 of `anything' //inputting treatment effect
+local takeup_rate: word 5 of `anything' //inputting takeup rate
+
+}
+
+********************************************************************************
+* data generating process
+********************************************************************************
+
+{
 
 clear
-set obs 112 //CEPS uses 112 schools for their calculations
+set obs `number_of_schools' //setting number of schools based on input
 generate school_id = _n
-generate school_size = trunc(rnormal(179,5))
+generate cluster_size = `cluster_size' //setting number of students to be observed at each school
 gen random = runiform(0,1)
-gen treat = 0 //randomly assigning treatment to each school with a 50% chance
-replace treat = 1 if random > 0.5
-drop random
-//generate fixed effect
-expand school_size //this gives us approximately 20,000 observations, similar to the CEPS dataset
+sort random
+gen random_id = _n
+gen treat = 0 //randomly assigning treatment to half of schools
+replace treat = 1 if random_id > `number_of_schools'/2
+drop random random_id
+expand cluster_size //expand
 sort school_id
 generate student_id = _n
-
-// one of the parent' ages
-gen avg_par_age = rnormal(28+16, 4) // geneated according to the world data atlas china, average age of having a baby, and the average age for students from grade 9 to 12
-gen avg_par_educ_yrs = trunc(rnormal(12, 2))
-drop if avg_par_educ_yrs <0
-// family size
 gen random = runiform(0,1)
-gen single_parent = 0
-replace single_parent = 1 if random < .076 //statistic from 1990
-//Liu H. A preliminary analysis of single-parent families in China. China Popul Today. 1998 Jun;15(3):11. PMID: 12293906.
-gen number_of_siblings = trunc(rnormal(1.4,0.7)) //the average worldwide number of siblings is a mean of 2 and a sd of 1, but due to the history of the one child policy we use a lower distribution here
-drop if number_of_siblings < 0
-// family_income_k
-gen family_income_cny_k = rnormal(35+avg_par_educ_yrs*.7, 10) // generated based on the average chinese household income from stats.gov.cn
-gen eq = rnormal(60,10)
+gen takeup = 0 //randomly assigning takeup status
+replace takeup = 1 if random <= `takeup_rate'
 
 //the mental health scale is generally on a scale of 0 to 100
-gen mental_health_scale = 10*treat - .5*avg_par_educ_yrs - 5*single_parent + 3*number_of_siblings + .5*family_income_cny_k +.15*eq + rnormal(20,7)
-//the true effect size of treatment is 10
-
-//the academic performance is generally on a scale of 0 to 100
-gen academic_performance = .3*mental_health_scale + .5*avg_par_educ_yrs - .5*single_parent + .3*family_income_cny_k +.1*eq + rnormal(30,7)
-//the true effect size of mental health scale is .3, which makes the true effect size of treatment about 3
-
-
-if `anything' == "biased" {
-	
-reg mental_health_scale treat avg_par_age avg_par_educ_yrs single_parent number_of_siblings family_income_cny_k, cluster(school_id)
-
-return scalar b_mh_treat = _b[treat]
-return scalar b_mh_avg_par_educ_yrs = _b[avg_par_educ_yrs]
-return scalar b_mh_single_parent = _b[single_parent]
-return scalar b_mh_number_of_siblings = _b[number_of_siblings]
-return scalar b_mh_family_income_cny_k = _b[family_income_cny_k]
-
-ivregress 2sls academic_performance avg_par_age avg_par_educ_yrs single_parent number_of_siblings family_income_cny (mental_health_scale = treat), cluster(school_id)
-
-return scalar b_ap_mental_health_scale = _b[mental_health_scale]
-return scalar b_ap_par_educ_yrs = _b[avg_par_educ_yrs]
-return scalar b_ap_single_parent = _b[single_parent]
-return scalar b_ap_family_income_cny_k = _b[family_income_cny_k]
+//the true effect size is `te'
+gen mental_health_scale = treat*rnormal(`te',5) + rnormal(50,7) //generating mental health scale
+replace mental_health_scale = rnormal(50,7) if takeup == 0
 
 }
 
+********************************************************************************
+* run biased regression
+********************************************************************************
 
-if `anything' == "unbiased" {
+{
 	
-	
-reg mental_health_scale treat avg_par_age avg_par_educ_yrs single_parent number_of_siblings family_income_cny_k eq, cluster(school_id)
-
-return scalar b_mh_treat = _b[treat]
-return scalar b_mh_par_educ_yrs = _b[avg_par_educ_yrs]
-return scalar b_mh_single_parent = _b[single_parent]
-return scalar b_mh_number_of_siblings = _b[number_of_siblings]
-return scalar b_mh_family_income_cny_k = _b[family_income_cny_k]
-return scalar b_mh_eq = _b[eq]
-
-ivregress 2sls academic_performance avg_par_age avg_par_educ_yrs single_parent number_of_siblings family_income_cny eq (mental_health_scale = treat), cluster(school_id)
-
-return scalar b_ap_mental_health_scale = _b[mental_health_scale]
-return scalar b_ap_par_educ_yrs = _b[avg_par_educ_yrs]
-return scalar b_ap_single_parent = _b[single_parent]
-return scalar b_ap_family_income_cny_k = _b[family_income_cny_k]
-return scalar b_ap_eq = _b[eq]
+if `bias' == 1 {
+	reg mental_health_scale treat, cluster(school_id) //regress on treatment, ignoring attrition
+	mat a = r(table) //save regression matrix
+	mat a = a[....,1] //save first row only
+	mat a = a' //transpose matrix
+	local b_t = _b[treat] //save treatment coefficient
+	local p_val = a[1,4] //save p value from regression matrix
+	return scalar b_treat = `b_t'
+	return scalar p = `p_val'
+}
 
 }
+
+********************************************************************************
+* run unbiased regression
+********************************************************************************
+
+{
+	
+if `bias' == 0 {
+	replace treat = treat*takeup //make treatment only 1 if at treatment school and complied
+	reg mental_health_scale treat, cluster(school_id)
+	mat a = r(table)
+	mat a = a[....,1]
+	mat a = a'
+	local b_t = _b[treat]
+	local p_val = a[1,4]
+	return scalar b_treat = `b_t'
+	return scalar p = `p_val'
+}
+
+}
+
 
 end
-
-projectdata_sim "unbiased"
-dis `r(b_mh_treat)'

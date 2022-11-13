@@ -1,3 +1,10 @@
+********************************************************************************
+* ECON 491
+* Week 9 - Power Calculations
+* Group 4
+* November 13, 2022
+********************************************************************************
+
 clear all
 
 global username "/Users/geenapanzitta/Documents/GitHub/econ490-fall22"
@@ -6,66 +13,210 @@ cd "${username}/_Week9/Group4"
 
 run "estimation.do"
 
-set seed 5731341 //generated using random.org
+set seed 46595 //generated using random.org
 
-// forv i = 1/100 {
-// 	clear
-// 	qui projectdata_sim "unbiased"
-// 	mat results_mh = nullmat(results_mh) \ [`i', 10, `r(b_mh_treat)', -.5, `r(b_mh_avg_par_educ_yrs)', -5, `r(b_mh_single_parent)', 3, `r(b_mh_number_of_siblings)', 0.5, `r(b_mh_family_income_cny_k)']
-//
-// }
+********************************************************************************
+* picking number of schools and cluster size
+********************************************************************************
 
-forv i = 1/100 {
-	clear
-	qui projectdata_sim "unbiased"
-	mat results_mh = nullmat(results_mh) \ [`i', 10, `r(b_mh_treat)', -.5, -5]
+{
+	
+qui foreach k in 30 60 90 120 { //test different number of schools
+	foreach j in 10 20 50 100 { //test different cluster sizes
+		cap mat drop results_`k'_`j'
+		forval te = 0(1)5 { //loop over treatment effect sizes (te) of 0 to 5 at increments of 1
+			forval i=1/100 { //running this loop 100 times
+				clear
+				projectdata_sim 1 `j' `k' `te' .8 //run simulation with bias, varying cluster sizes, varying number of schools, varying treatment effects, and take-up of 80%
+				mat results_`k'_`j' = nullmat(results_`k'_`j') \ [`k',`j',`r(b_treat)', `r(p)',`te'] //save matrix with number of schools, cluster size, treatment coefficient, pvalues, and treatment effect
+				}
+		}
+	}
+}
+
+foreach k in 30 60 90 120 { //saving the matrices as tempfiles
+	foreach j in 10 20 50 100 {
+		clear
+		tempfile results_temp_`k'_`j' //create tempfile for matrix
+		save `results_temp_`k'_`j'', emptyok
+		svmat results_`k'_`j', n(col) //save matrix to tempfile
+		save `results_temp_`k'_`j'', replace
+	}
+}
+
+clear
+use `results_temp_30_10' //load first temp file
+foreach j in 20 50 100 { //append other temp files
+	append using `results_temp_30_`j''
+}
+foreach k in 60 90 120 {
+	foreach j in 10 20 50 100 {
+		append using `results_temp_`k'_`j''
+	}
+}
+
+rename c1 number_of_schools //rename variables
+rename c2 cluster_size
+rename c3 b_t
+rename c4 p
+rename c5 treatment_effect
+sort number_of_schools //sort by number of schools
+sort cluster_size //sort by cluster size
+
+gen sig = p <0.05 //generate signfiicance variable if p value less than .05
+
+foreach k in 30 60 90 120 { //graph probability of significance by treatment effect, by number of schools and cluster size
+	graph bar sig if number_of_schools == `k', over(treatment_effect) by(cluster_size, title("MDE, `k' schools, biased, by cluster size")) yline(0.8) b1title("Treatment Effect") ytitle("Probability of Significance")
+	graph export "mde_bar_`k'_clustersize.png", replace
+}
+
+collapse sig, by(number_of_schools cluster_size treatment_effect) //collapse probability into means, by number of schools, cluster size, and treatment effect
+
+rename sig probability_of_significance //renaming variable
+
+export delimited using "mde_numberofschools_clustersize.csv", replace //save table of significance
 
 }
 
-mat colnames results = i n b_age b_educ_yrs b_dist_from_city b_family_size b_experience
+********************************************************************************
+* finding minimum detectable effect, unbiased
+********************************************************************************
 
+{
+	
 clear
 
-svmat results, names(col)
-		
-		
-//calculate minimum detectable effect size
-set matsize 800
-cap mat drop results
-qui forval te = 0(0.5)1 { // Loop over treatment effect sizes (te) of 0 to 1 standard deviations at increments of 0.1 SDs
+tempfile results_temp_unbiased
+save `results_temp_unbiased', emptyok
 
-	forval i=1/100 { // Running this loop 1000 times
+qui forval te = 0(1)5 { //loop over treatment effect sizes (te) of .8 to 1.2 at increments of .1
+	foreach j in 1 2 { //running this loop twice because the maximum matrix size is smaller than 1000
 		clear
-		set obs 80 // Set sample size to 1000
-		gen e=rnormal() // Include a normally distributed error term
-		gen t=rnormal()>0 // Randomly assign treatment to half the population
-		gen y=1+`te'*t+e // Set functional form for DGP (here we have some constant 1 plus the treatment effect times the positive normal dist plus error term
-		reg y t // Run the regression for each loop and store the results in matrix below
+		cap mat drop results_mat
+		forval i=1/500 { //running this loop 500 times
+			clear
+			projectdata_sim 0 50 60 `te' .8 //run simulation without bias, cluster size of 50, 60 schools, varying treatment effects, and take-up of 80%
+			mat results_mat = nullmat(results_mat) \ [`r(b_treat)', `r(p)',`te'] //save matrix with treatment coefficient, pvalues, and treatment effect
+			}
+		clear
+		svmat results_mat, n(col) //save matrix to data
+		rename c1 b_t //rename variables
+		rename c2 p
+		rename c3 te
 		
-		mat a = r(table)
-		mat a = a[....,1]
-		mat results = nullmat(results) \ a' , [`te']
+		gen sig = p <0.05 //generate signfiicance variable if p value less than .05
+		collapse sig, by(te) //collapse data to find probability of significance
 		
+		append using `results_temp_unbiased' //save data to tempfile
+		save `results_temp_unbiased', replace
 		}
 }
 
-mat colnames results = i n b_treat b_par_age b_par_educ_yrs b_dist_from_city b_family_size b_family_income_k
-
-// Load the results into data
 clear
-svmat results , n(col)
+use `results_temp_unbiased' //load tempfile
+sort te
 
-local vars b_treat b_par_age b_par_educ_yrs b_dist_from_city b_family_size b_family_income_k
+graph bar sig, over(te) yline(0.8) title("MDE, unbiased") b1title("Treatment Effect") ytitle("Probability of Significance") name(mde_bar_unbiased, replace) //graph probability of significance by treatment effect
 
-foreach i in `vars' {
-	scatter `i' n, b1title("Number of Observations") name("scatter_`i'", replace)
+
 }
-graph combine scatter_b_treat scatter_b_par_age scatter_b_par_educ_yrs scatter_b_dist_from_city scatter_b_family_size scatter_b_family_income_k, title("Coefficients vs. Sample Size")
 
-graph export "projectdata_sim.png"
-export delimited using "projectdata_sim.csv", replace
+********************************************************************************
+* finding minimum detectable effect, biased
+********************************************************************************
 
-// Analyze all the regressions we ran
-gen sig = p <0.05 
-graph bar sig , over(c10) yline(0.8) //assuming we need power of 0.8, the graph shows for each treatment effect size (values on x-axis) the percent of times that the regression had significant results i.e. where p<0.05
+{
+	
+clear
 
+tempfile results_temp_biased
+save `results_temp_biased', emptyok
+
+qui forval te = 0(1)5 { //loop over treatment effect sizes (te) of .8 to 1.2 at increments of .1
+	foreach j in 1 2 { //running this loop twice because the maximum matrix size is smaller than 1000
+		clear
+		cap mat drop results_mat
+		forval i=1/500 { //running this loop 500 times
+			clear
+			projectdata_sim 1 50 60 `te' .8 //run simulation with bias, cluster size of 50, 60 schools, varying treatment effects, and take-up of 80%
+			mat results_mat = nullmat(results_mat) \ [`r(b_treat)', `r(p)',`te'] //save matrix with treatment coefficient, pvalues, and treatment effect
+			}
+		clear
+		svmat results_mat, n(col) //save matrix to data
+		rename c1 b_t //rename variables
+		rename c2 p
+		rename c3 te
+		
+		gen sig = p <0.05 //generate signfiicance variable if p value less than .05
+		collapse sig, by(te) //collapse data to find probability of significance
+		
+		append using `results_temp_biased' //save data to tempfile
+		save `results_temp_biased', replace
+		}
+}
+
+clear
+use `results_temp_biased' //load tempfile
+sort te
+
+graph bar sig, over(te) yline(0.8) title("MDE, biased") b1title("Treatment Effect") ytitle("Probability of Significance") name(mde_bar_biased, replace) //graph probability of significance by treatment effect
+
+
+}
+
+********************************************************************************
+* finding minimum detectable effect, biased, more precise
+********************************************************************************
+
+{
+	
+clear
+
+tempfile results_temp_bias_precise
+save `results_temp_bias_precise', emptyok
+
+qui forval te = .8(.1)1.2 { //loop over treatment effect sizes (te) of .8 to 1.2 at increments of .1
+	foreach j in 1 2 { //running this loop twice because the maximum matrix size is smaller than 1000
+		clear
+		cap mat drop results_mat
+		forval i=1/500 { //running this loop 500 times
+			clear
+			projectdata_sim 1 50 60 `te' .8 //run simulation with bias, cluster size of 50, 60 schools, varying treatment effects, and take-up of 80%
+			mat results_mat = nullmat(results_mat) \ [`r(b_treat)', `r(p)',`te'] //save matrix with treatment coefficient, pvalues, and treatment effect
+			}
+		clear
+		svmat results_mat, n(col) //save matrix to data
+		rename c1 b_t //rename variables
+		rename c2 p
+		rename c3 te
+		
+		gen sig = p <0.05 //generate signfiicance variable if p value less than .05
+		collapse sig, by(te) //collapse data to find probability of significance
+		
+		append using `results_temp_bias_precise' //save data to tempfile
+		save `results_temp_bias_precise', replace
+		}
+}
+
+clear
+use `results_temp_bias_precise' //load tempfile
+sort te
+
+graph bar sig, over(te) yline(0.8) title("MDE, biased, precise") b1title("Treatment Effect") ytitle("Probability of Significance") name(mde_bar_biased_precise, replace) //graph probability of significance by treatment effect
+
+
+}
+
+********************************************************************************
+* exporting combined graphs
+********************************************************************************
+
+{
+	
+graph combine mde_bar_biased mde_bar_unbiased, title("MDE biased vs unbiased")
+graph export "mde_biased_vs_unbiased.png", replace
+
+graph combine mde_bar_biased mde_bar_biased_precise, title("MDE biased, precise")
+graph export "mde_biased_vs_biased_precise.png", replace
+
+}
