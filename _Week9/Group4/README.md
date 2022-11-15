@@ -1,41 +1,42 @@
-## Week 8 Homework Assignment, Group 4: income_sim
+# Week 9 Group 4: Power Calculations
 
-# `simulate.do` Overview
+## Overview
+We perform power calculations on our sample dataset of schools to find the minimum detectable effects (MDEs) of our treatment, while varying study parameters such as cluster size and cluster amount.
 
-Our simulate.do file defines a rclass program which takes in sample size as an input.
-The program firstly creates an index variable `id` to serve as identification, for each variable in the sample size.
-It creates a `state` variable which ranges from 1 to 10, evenly distributed across observations. For the purpose of the simulation, it is assumed that a higher value for the `state` variable signifies a more urban state.
-Then, the program generates 5 additional variables.
-
-- `age`: distributed normally with a mean of 35 and a standard deviation of 5.
-
-- `educ_yrs`: distributed normally with a mean of (12+(state/2)) and a standard deviation of 1. The floor is taken to ensure whole number values. This variable is positively correlated with state because urban areas tend to have higher levels of education.
-
-- `dist_from_city`: distributed normally with a mean of (25-state) and a standard deviation of 5. This variable is negatively correlated with state because urban areas tend to have a lower distance to a major city.
-
-- `family_size`: distributed normally with a mean of 4 and a standard deviation of 1.The floor is taken to ensure whole number values.
-
-- `experience`: distributed uniformly with a minimum of 0 and a maximum of age-18. The maximum value should be age-18 because a person should not have more work experience than if they were working since 18.
-
-The observations are dropped if `age`<18, `educ_yrs`<0, `dist_from_city`<0, or `family_size`<1.
-However, we constructed the means and standard deviations of these variables to be such that these safety restrictions are unlikely.
-
-The program then generates an income variable, named `income_k`, dependent on the previously generated variable. The process is defined below:
-
-gen `income_k` = 2(`experience`) + .5(`age`) -.3(`dist_from_city`) + 1(`family_size`) + 1.5(`educ_yrs`) + rnormal(0,4)
-
-Coefficient specifications were chosen by hand such that the `income_k` variable generates reasonable values.
-Then, a regression is run with the variables, and is clustered by state, as follows:
-
-reg `income_k` `age` `educ_yrs` `dist_from_city` `family_size` `experience`, cluster(`state`)
-
-The results are then stored and returned as local variables.
-
-# `results.do` Overview
-
-Our results.do file runs the simulate.do file to load the simulate program and it sets a seed that we generated using random.org.
-It runs the `income_sim` program with different sample sizes, running each 100 times and storing the results in a matrix, `results`.
-It saves the matrix to the data and creates scatter plots of sample size vs coefficients, showing how as the sample size increases, the coefficients converge to their true values. It then combines the scatter plots into one graph and exports the graph. It then exports the data as a csv.
+## Study design: projectdata_sim
+The program projectdata_sim is an rclass program returning regression outputs. It takes in 5 user inputs as the study parameters. Calling the program could look something like this:
 
 
-![Income Graph](income_sim_scatter.png)
+projectdata_sim [biased] [cluster size] [number of clusters] [treatment effect] [takeup rate]
+
+Where
+“biased” is a binary input, 1 for biased regression results, 0 for unbiased results. Biasedness relates to whether or not takeup rate is accounted for.
+“cluster size” refers to the number of observations in each cluster. In this case, it would be the number of students in each school that we randomly select for data.
+“number of clusters” refers to the number of clusters (schools) we will survey. We assign half the schools to the treatment group and the other half to the control group.
+“treatment effect” refers to the expected effect of treatment.
+“takeup rate” refers to the proportion of students in the treatment group who actually take up treatment.
+
+For example, calling the program as:
+
+projectdata_sim 1 50 100 5 0.8
+
+Will run a simulation with 100 schools, selecting 50 students from each school, with an expected treatment effect of 5, and an expected takeup rate of 80%, not accounted for in the regression.
+
+## Power
+Firstly, we ran simulations of varying cluster sizes and cluster amount to determine the ideal cluster size for high power while maintaining some practicality.
+We determined that 30 schools with 100 random students surveyed, or 60 schools with 50 random students surveyed would allow us to detect a minimum of around 1 percentage point on our mental health scale index. We expect the effect to be larger than 5, so this MDE works. We decided to go with 60 schools with 50 students surveyed each, as some schools may have less than 100 students in the year level. We ran our power calculations again, looking at treatment effects between 0.8 and 1.2 to find a more precise estimate for the MDE, and we found the MDE to be between 0.9 and 1.
+
+We generated a csv, [mde_numberofschools_clustersize.csv] with the probability of significance of different treatment effects for varying numbers of schools and cluster sizes.
+
+We generated 4 bar graphs showing the probability of significance of different treatment effects by sample size, with one graph showing results for 30 schools, one for 60 schools, one for 90 schools, and one for 120 schools. They are named [mde_bar_30_clustersize.png], [mde_bar_60_clustersize.png], [mde_bar_90_clustersize.png], and [mde_bar_120_clustersize.png].
+
+![](mde_bar_60_clustersize.png)
+
+We also generated a graph showing the probability of significance of different treatment effects using our selected cluster size and cluster sample, looking at treatment effects between 0 and 5 as well as treatment effects between 1 and 2. This is named [mde_biased_vs_biased_precise.png].
+
+![](mde_biased_vs_biased_precise.png)
+
+## Biasedness
+Next, we ran simulations using our selected cluster size and cluster amount, once with bias and once without. We generated a graph showing the probability of significance of different treatment effects with and without bias, and found that the bias did not weaken our estimates much*. This is named “mde_biased_vs_unbiased.png”.
+
+![](mde_biased_vs_unbiased.png)
