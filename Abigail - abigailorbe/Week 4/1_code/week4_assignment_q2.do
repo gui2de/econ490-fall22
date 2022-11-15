@@ -1,4 +1,4 @@
-********** Question 2 // Did you manage to add school_id to your dataset? Can't seem to find it in your code. What else were you not able to do? Just leave a comment. And then upload your work. Well done!
+********** Question 2 // 
 // Copied from hint:
 global school "/Users/abigailorbe/Library/CloudStorage/Box-Box/Econ490_Fall2022/Week4/04_assignment/data/psle_student_raw.dta"
 
@@ -9,7 +9,8 @@ split s2, parse("</TD></TR>") gen(var)
 gen serial = _n
 reshape long var, i(serial) j(j)
 split var, parse("</FONT></TD>")
-keep var1 var2 var3 var4 var5
+keep schoolcode var1 var2 var3 var4 var5 // keeping schoolcode
+rename schoolcode school_id // renaming schoolcode per instructions
 drop if var2=="" & var3==""
 gen cand_id = substr(var1,-14,.)
 gen gender = substr(var3,-1,.)
@@ -30,6 +31,7 @@ local varlist "kiswahili english maarifa hisabati science uraia average"
 foreach subject in `varlist'{
 	replace `subject' = usubstr(`subject',-1,1)
 }
+
 // Save
 cd "/Users/abigailorbe/Documents/repos/econ490-fall22/Abigail - abigailorbe/Week 4/2_outputs"
 save question2
