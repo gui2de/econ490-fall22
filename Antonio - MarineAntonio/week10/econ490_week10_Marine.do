@@ -132,7 +132,36 @@ summarize total_distance // on average, enumerators travel .563 kilometers -- th
 
 
 
+* ----------------------------------- *
 ***** 
 * Problem 4.
 
 clear all
+
+use "Tz_elec_10_clean", clear
+
+rename *_10 *  // removing all of the _10 suffixes so we can merge later
+drop total_candidates ward_total_votes // drop unnecessary variables
+
+tempfile tanz10
+save `tanz10', replace
+
+use "Tz_elec_15_clean", clear
+
+rename *_15 *  // like before, dropping all of the suffixes (_15)
+drop total_candidates ward_total_votes // drop same vars again
+
+* OBSERVATION: the 'ward' variable alone doesn't uniquely identify observations, so there must be multiple wards with the same name. Stata doesn't give me an error if I merge using district and ward OR region, district, and ward. I'm not positive which to do!
+* merge 1:1 region district ward using `tanz10' // when I merge using all three, I notice that there are many wards with the same name in the same region OR district, where one is parentless and the other is childless. This seems suspicious.
+merge 1:1 district ward using `tanz10' // ??
+
+gen type = _merge // generate categorical variable describing "type of ward" in regard to presence in 2010 and/or 2015
+* tab type // this confirms that this variable correctly indicates matching result from the merge.
+drop _merge
+sort ward_id type
+label var type "Ward Type" 
+
+label define ward_type 3 "always present" 2 "childless" 1 "parentless", replace // to describe the meaning of the categorical variable type
+label values type ward_type // actually applying our label to the appropriate variable
+
+tab type // to see how many wards there are of each type, with nice labels
