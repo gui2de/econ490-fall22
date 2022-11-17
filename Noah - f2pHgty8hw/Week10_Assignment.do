@@ -84,7 +84,7 @@ while j[1] > 74100 { // Arbitrary threshold I chose that seemed reasonable
 	gen latitude0 = `latitude0'
 	gen longitude0 = `longitude0'
 
-	geodist latitude longitude latitude0 longitude, gen(distance) // Calculate distance of each village to mutual point
+	geodist latitude longitude latitude0 longitude0, gen(distance) // Calculate distance of each village to mutual point
 
 	sort distance latitude longitude // Sort dataset by distance to arbitrary point
 
