@@ -1,0 +1,16 @@
+## About the Survey
+The research question behind my survey is: Are people, specifically adults who graduated 10 to 20 years ago, more likely to be active in their communities if they live in the same state in which they attended primary and secondary school? The intuition behind this is that people who completed all of their education in one state may feel more connected to their community and invested in its success, leading them to be more involved in state and local government as well as community organizations. I restrict the survey to adults who graduated high school 10 to 20 years ago because these individuals (1) are more likely to have completed their post-secondary education and be settled into a permanent residence, and (2) are more likely to have young children in the local school system (a few of my questions ask about involvement in school-based organizations). I also restrict the survey to respondents who completed all of their schooling in the U.S. and who graduated high school.
+
+After the eligibility and demographic questions, I ask about the states in which the respondent attended primary and secondary school to understand how many times they moved and where. The second section includes questions about involvement in various levels of community engagement and the time dedicated to those activities. In this second section, I use a list experiment to gauge the extend to which respondents support community service requirements for high school graduation and mandatory civics courses in high schools. In the final section of the survey, I ask basic demographic questions.
+
+The observations in my case database are adults in the United States who have been recruited to participate in this study. Recruitment would target U.S. high school graduates, as these are the only adults eligible for the survey. However, it is important that adults who are more involved in their local communities are not oversampled during recruitment (ie: recruiting at town meetings, PTA meetings, community forums, etc.), as this is one of the dependent variables in which I am interested. A potential bias in the recruitment process would be that individuals who would volunteer to participate in a survey may also be more likely to be involved in their community. Thus, incentives or compensation should be provided to minimize this bias.
+
+## Testing survey form definition with [ietestform]
+The ietestform function brought my attention to the fact that there was an unused choices list in my survey form definition, which I was removed to make the form more efficient. Additionally, the function flagged survey questions that were not required, and I sifted through this list to identify survey questions that should be made required (such as those related to community involvement) and the survey questions that should remain optional (such as the gender and race identification questions).
+
+## Accessing the Survey
+You can access the survey in Google Sheets here: https://docs.google.com/spreadsheets/d/1OpHTXtSP5VtxFCzy3mqwEEaUZ6duXtEby1EhhQRNOBQ/edit?usp=sharing
+
+You can access the survey in SurveyCTO here: https://gui2de.surveycto.com/collect/ato_week6?caseid=
+
+To use case management: https://gui2de.surveycto.com/collect/cases.html

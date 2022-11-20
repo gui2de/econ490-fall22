@@ -1,0 +1,121 @@
+
+This report was created by user abigailorbe on 20Nov2022 using the Stata command ietestform
+
+Use either of these links to read more about this command:
+,https://github.com/worldbank/iefieldkit
+,https://dimewiki.worldbank.org/wiki/Ietestform
+
+,Form ID,ato_week6
+,Form Title,ATO Week6
+,Form Version,2211201359
+,Form File,ATO Week6.xlsx
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON NUMERIC NAME VALUES
+----------------------------------------------------------------------
+
+"There are non numeric values in the [value] column of the choice sheet"
+
+,"row" ,"list_name" ,"value" ,"label" ,"labelstata" 
+,"19","statescsv","State","State","State"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Value.2FName_Numeric
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NAME CONFLICT ACROSS REPEAT GROUP
+----------------------------------------------------------------------
+
+"There is a potential name conflict between field a field inside a repeat group with a field outside "
+"the repeat group. When variables in repeat groups are imported to Stata they will be given the "
+"suffix fieldname_1, fieldname_2 etc. for each repeat in the repeat group. It is therefore bad "
+"practice to have a field name that share the name as a field in a repeat group followed by an "
+"underscore and a number, no matter how big the number is. The potential conflicts are:"
+
+"Repeat field [state_grades] on row 45 and field [state_grades_1] on row 42"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Repeat_Group_Name_Conflict
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON-REQUIRED NON-NOTE TYPE FIELD
+----------------------------------------------------------------------
+
+"Fields of types other than note should all be required so that it cannot be skipped during the "
+"interview. The following fields are not required and could therfore be skipped by the enumerator:"
+
+,"row" ,"type" ,"name" 
+,"22","select_one","consent"
+,"29","integer","gradyear"
+,"34","select_one","collegestate"
+,"40","integer","numattendstate"
+,"41","select_one","attendstate1"
+,"42","select_multiple","state_grades_1"
+,"44","select_one","attendstate"
+,"45","select_multiple","state_grades"
+,"57","integer","support_civics"
+,"58","integer","support_dummy"
+,"59","integer","support_commservice"
+,"82","select_multiple","invtype_schoolboard"
+,"83","select_multiple","invtype_pta"
+,"84","select_multiple","invtype_otherschool"
+,"85","select_multiple","invtype_localgov"
+,"86","select_multiple","invtype_neighborhood"
+,"87","select_multiple","invtype_commservice"
+,"88","select_multiple","invtype_youthsports"
+,"89","select_multiple","invtype_church"
+,"90","select_multiple","invtype_otherlocal"
+,"91","select_multiple","invtype_stategov"
+,"92","select_multiple","invtype_stateadv"
+,"93","select_multiple","invtype_fedgov"
+,"94","select_multiple","invtype_fedadv"
+,"98","integer","time_schoolboard"
+,"99","integer","time_pta"
+,"100","integer","time_schoolvol"
+,"101","integer","time_otherschool"
+,"102","integer","time_localgov"
+,"103","integer","time_neighborhood"
+,"104","integer","time_commservice"
+,"105","integer","time_youthsports"
+,"106","integer","time_church"
+,"107","integer","time_otherlocal"
+,"108","integer","time_stategov"
+,"109","integer","time_stateadv"
+,"110","integer","time_fedgov"
+,"111","integer","time_fedadv"
+,"115","select_one","gender"
+,"116","select_one","hispanic"
+,"117","select_multiple","race"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Required_Column
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: UNUSED CHOICE LISTS
+----------------------------------------------------------------------
+
+"There are lists in the choice sheet that are not used by any field in the survey sheet. While that "
+"is allowed in ODK syntax it is an indication of a typo that might casue errors later. Make sure "
+"that the following list items are indeed not supposed to be used:"
+
+,"row" ,"list_name" ,"value" ,"label" ,"labelstata" 
+,"4","age","1","Under 18 years of age","Under 18 years of age"
+,"5","age","2","18-34 year old","18-34 year old"
+,"6","age","3","35-54 years old","35-54 years old"
+,"7","age","4","55 years or older","55 years or older"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Unused_Choice_Lists
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+This is the end of the report.
