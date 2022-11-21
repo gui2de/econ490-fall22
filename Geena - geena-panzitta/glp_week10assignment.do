@@ -68,7 +68,6 @@ use "${gps_data}" //import gps data
 egen h_total = count(id) //count number of households
 local hn = h_total //save number of households as local
 drop h_total
-count
 rename (id latitude longitude)(id1 lat1 long1)
 
 tempfile gps //save data as tempfile
@@ -78,16 +77,13 @@ rename (id1 lat1 long1) (id2 lat2 long2) //rename key variables
 
 cross using `gps' //now we have 111*111 observations
 drop if id1 == id2 //get rid of obs with the same ids, drops the total to 12210, P(111,2)
-sort id1 id2
 egen p1 = concat(id1 id2) //get rid of extra permutations
 egen p2 = concat(id2 id1)
-replace p2 = p1 if id1 > id2 //p1 is now the same for all/both permutations of the same ids
+replace p2 = p1 if id1 > id2 //p2 is now the same for all/both permutations of the same ids
 by p2, sort: generate i = _n
 keep if i==1 //keeps only one permutation, drops the total to 6105, C(111,2)
 drop p1 p2 i
 geodist lat1 long1 lat2 long2 , generate(dist) //calculate distance between each household
-
-sort id1 id2
 
 gen lat = .
 gen lat_num = .
@@ -95,7 +91,7 @@ replace lat = lat1 if lat1 <= lat2 //make lat the smaller of the two latitudes
 replace lat_num = 1 if lat1 <= lat2 //note whether smaller lat is first or second household
 replace lat = lat2 if lat2 < lat1
 replace lat_num = 2 if lat2 < lat1
-gen id_origin = . //generate empty variables
+gen id_origin = . //generate empty/zero variables
 gen enum_1 = 0
 gen enum_2 = 0
 gen assigned = 0
@@ -116,100 +112,99 @@ if `e1' == `hn'/`en' {
 }
 
 local en2 = `hn' - `en'*`e1' //save number of enumerators with upper bound
-local en1 = `en'-`en2' //save number of enumerators with lower bound bound
+local en1 = `en'-`en2' //save number of enumerators with lower bound
 
 forv i = 1/`en' { //loop through each enumerator
 
-sort assigned lat //sort so that unassigned households are first, then smallest to largest latitude
-generate j = _n //find the smallest latitude household, picking only one when there are ties
-replace j1 = j if lat_num == 1
-replace j2 = j if lat_num == 2
-egen min_j1 = min(j1)
-egen min_j2 = min(j2)
-replace min_j_num = 1 if min_j1 < min_j2 //note which of the two households the smallest latitude is
-replace min_j_num = 2 if min_j2 < min_j1
+	sort assigned lat //sort so that unassigned households are first, then smallest to largest latitude
+	generate j = _n //find the smallest latitude household, picking only one when there are ties
+	replace j1 = j if lat_num == 1
+	replace j2 = j if lat_num == 2
+	egen min_j1 = min(j1)
+	egen min_j2 = min(j2)
+	replace min_j_num = 1 if min_j1 < min_j2 //note which of the two households the smallest latitude is
+	replace min_j_num = 2 if min_j2 < min_j1
 
-replace id_origin = id1 if j == 1 & min_j_num == 1 //set the minimum lat house as the origin house
-replace id_origin = id2 if j == 1 & min_j_num == 2
+	replace id_origin = id1 if j == 1 & min_j_num == 1 //set the minimum lat house as the origin house
+	replace id_origin = id2 if j == 1 & min_j_num == 2
 
-sort id_origin //make nonempty id_origin house first
-local id_origin_l = id_origin[1] //save id_origin as local
+	sort id_origin //make nonempty id_origin house first
+	local id_origin_l = id_origin[1] //save id_origin as local
 
-replace id_origin = `id_origin_l' if (id1 == `id_origin_l'|id2 == `id_origin_l') & assigned == 0 //save all household pairs with the minimum lat house as having the origin house
+	replace id_origin = `id_origin_l' if (id1 == `id_origin_l'|id2 == `id_origin_l') & assigned == 0 //save all household pairs with the minimum lat house as having the origin house
 
-replace enum_1 = `i' if id_origin == id1 & assigned == 0 //set enumerator for the origin house
-replace enum_2 = `i' if id_origin == id2 & assigned == 0
+	replace enum_1 = `i' if id_origin == id1 & assigned == 0 //set enumerator for the origin house
+	replace enum_2 = `i' if id_origin == id2 & assigned == 0
 
-sort id_origin assigned dist //put all household pairs that include the origin house first, the unassigned houses first within that, and sort by distance within that
-count
+	sort id_origin assigned dist //put all household pairs that include the origin house first, the unassigned houses first within that, and sort by distance within that
 
-forv j = 1/`e1_1' { //run through upper bound number of households - 1 (since origin house is the first)
-	replace enum_1 = `i' if _n == `j' & id_origin == id2 & assigned == 0 & `i' <= (`en'-`en2') //set enumerator for the first `e1_1' closest houses
-	replace num = 1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' <= (`en'-`en2') //save a variable as nonzero
-	replace num_id = id1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' <= (`en'-`en2') //save the id of the house that is not the origin house
-	
-	replace enum_2 = `i' if _n == `j' & id_origin == id1 & assigned == 0 & `i' <= (`en'-`en2')
-	replace num = 1 if _n == `j' & id_origin == id1 & assigned == 0 & `i' <= (`en'-`en2')
-	replace num_id = id2 if _n == `j' & id_origin == id1 & assigned == 0 & `i' <= (`en'-`en2')
-}
-
-sort num //sort so that the first `e1_1' houses that match the requirements are listed first
-forv j = 1/`e1_1' { //save locals of the ids of each house
-	local origin_`j' = num_id[`j'] 
-}
-
-forv j = 1/`e1_1' { //set the enumerator for the chosen houses, even when they aren't paired with the origin house
-	replace enum_1 = `i' if id1 == `origin_`j'' & `i' <= (`en'-`en2')
-	replace enum_2 = `i' if id2 == `origin_`j'' & `i' <= (`en'-`en2')
-}
-
-if `e2' > 0 { //repeat for the lower bound
-	forv j = 1/`e2_1' {
-		replace enum_1 = `i' if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
-		replace num = 1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
-		replace num_id = id1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
-		replace assigned = 1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
-		replace enum_2 = `i' if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
-		replace num = 1 if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
-		replace num_id = id2 if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
-		replace assigned = 1 if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
+	forv j = 1/`e1_1' { //run through upper bound number of households - 1 (since origin house is the first)
+		replace enum_1 = `i' if _n == `j' & id_origin == id2 & assigned == 0 & `i' <= (`en'-`en2') //set enumerator for the first `e1_1' closest houses
+		replace num = 1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' <= (`en'-`en2') //save a variable as nonzero
+		replace num_id = id1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' <= (`en'-`en2') //save the id of the house that is not the origin house
+		
+		replace enum_2 = `i' if _n == `j' & id_origin == id1 & assigned == 0 & `i' <= (`en'-`en2')
+		replace num = 1 if _n == `j' & id_origin == id1 & assigned == 0 & `i' <= (`en'-`en2')
+		replace num_id = id2 if _n == `j' & id_origin == id1 & assigned == 0 & `i' <= (`en'-`en2')
 	}
-}
 
-sort num
-count
-forv j = 1/`e2_1' {
-	local origin_`j' = num_id[`j']
-}
+	sort num //sort so that the first `e1_1' houses that match the requirements are listed first
+	forv j = 1/`e1_1' { //save locals of the ids of each house
+		local origin_`j' = num_id[`j'] 
+	}
 
-forv j = 1/`e2_1' {
-	replace enum_1 = `i' if id1 == `origin_`j'' & `i' > (`en'-`en2')
-	replace enum_2 = `i' if id2 == `origin_`j'' & `i' > (`en'-`en2')
-	
-}
+	forv j = 1/`e1_1' { //set the enumerator for the chosen houses, even when they aren't paired with the origin house
+		replace enum_1 = `i' if id1 == `origin_`j'' & `i' <= (`en'-`en2')
+		replace enum_2 = `i' if id2 == `origin_`j'' & `i' <= (`en'-`en2')
+	}
 
-replace assigned = 1 if enum_1 != 0 | enum_2 != 0 //mark households with enumerators as assigned
+	if `e2' > 0 { //repeat for the lower bound
+		forv j = 1/`e2_1' {
+			replace enum_1 = `i' if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
+			replace num = 1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
+			replace num_id = id1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
+			replace assigned = 1 if _n == `j' & id_origin == id2 & assigned == 0 & `i' > (`en'-`en2')
+			replace enum_2 = `i' if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
+			replace num = 1 if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
+			replace num_id = id2 if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
+			replace assigned = 1 if _n == `j' & id_origin == id1 & assigned == 0 & `i' > (`en'-`en2')
+		}
+	}
 
-replace id_origin = . //reset the empty variables
-replace lat = . if assigned == 1 //mark lat as empty for assigned houses
-replace num = .
-replace num_id = .
-drop j
-replace j1 = .
-replace j2 = .
-replace min_j_num = .
-drop min_j1 min_j2
+	sort num
+	count
+	forv j = 1/`e2_1' {
+		local origin_`j' = num_id[`j']
+	}
+
+	forv j = 1/`e2_1' {
+		replace enum_1 = `i' if id1 == `origin_`j'' & `i' > (`en'-`en2')
+		replace enum_2 = `i' if id2 == `origin_`j'' & `i' > (`en'-`en2')
+		
+	}
+
+	replace assigned = 1 if enum_1 != 0 | enum_2 != 0 //mark households with enumerators as assigned
+
+	replace id_origin = . //reset the empty variables
+	replace lat = . if assigned == 1 //mark lat as empty for assigned houses
+	replace num = .
+	replace num_id = .
+	drop j
+	replace j1 = .
+	replace j2 = .
+	replace min_j_num = .
+	drop min_j1 min_j2
 
 }
 
 preserve
-drop if enum_1 != enum_2 //keep household pairs with the same enumerator
+drop if enum_1 == 0 | enum_2 == 0 //drop pairs that have a missing enumerator
 collapse enum_1, by(id1) //keep 1 obs for each household
 rename (id1 enum_1)(id enum) //rename to match original data
 save `assignments', replace //save the tempfile
 restore
 
-drop if enum_1 != enum_2  //same as above
+drop if enum_1 == 0 | enum_2 == 0 //same as above
 collapse enum_2, by(id2)
 rename (id2 enum_2)(id enum)
 append using `assignments' //add to enum_1 assignments
