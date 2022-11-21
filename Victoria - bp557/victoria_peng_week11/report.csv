@@ -1,0 +1,100 @@
+thisreportwascreatedbyuservictor
+Use either of these links to read more about this command:
+",https://github.com/worldbank/iefieldkit"
+",https://dimewiki.worldbank.org/wiki/Ietestform"
+",Form ID,victoria_week6"
+",Form Title,Victoria Week6"
+",Form Version,2211201856"
+",Form File,Victoria Week6.xlsx"
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON NUMERIC NAME VALUES
+----------------------------------------------------------------------
+There are non numeric values in the [value] column of the choice sheet
+label 
+Continent_name
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Value.2FName_Numeric
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NO STATA LIST LABEL
+----------------------------------------------------------------------
+There is no column in the choice sheet with the name [label:stata]. This is best practice as it 
+"allows you to automatically import choice list labels optimized for Stata's value labels, making "
+the data set easier to read.
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Stata_Labels_Columns
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: END/BEGIN NAME MISMATCH
+----------------------------------------------------------------------
+The name in the end group/repeat does not match the name in the most recent begin group/repeat. 
+"This does not cause an error in ODK, but is recommended to solve programming errors with "
+missmatching group/repeats fields. These cases were found:
+begin_repeat [families_member] on row 40 and end_repeat [family_member] on row 45
+begin_repeat [families_member] on row 40 and end_group [Family] on row 46
+begin_repeat [families_member] on row 40 and end_group [consented] on row 92
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Matching_begin_.2Fend
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NO STATA FIELD LABEL
+----------------------------------------------------------------------
+There is no column in the survey sheet with the name [label:stata]. This is best practice as this 
+"allows you to automatically import variable labels optimized for Stata, making the data set easier "
+to read.
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Stata_Labels_Columns
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON-REQUIRED NON-NOTE TYPE FIELD
+----------------------------------------------------------------------
+Fields of types other than note should all be required so that it cannot be skipped during the 
+interview. The following fields are not required and could therfore be skipped by the enumerator:
+name 
+timeuse_golf_hours
+timeuse_studying_hours
+timeuse_dineout_hours
+timeuse_sleeping_hours
+timeuse_shopping_hours
+timeuse_working_hours
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Required_Column
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: REQUIRED NOTE TYPE FIELD
+----------------------------------------------------------------------
+Fields of type note creates an impassable view that are impossible for the enumerator to sweep 
+pass. Make sure that is the inentional behavior for the following fields:
+name 
+nocase
+sum_timeuse_check2
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Required_Column
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: UNUSED CHOICE LISTS
+----------------------------------------------------------------------
+There are lists in the choice sheet that are not used by any field in the survey sheet. While that 
+is allowed in ODK syntax it is an indication of a typo that might casue errors later. Make sure 
+that the following list items are indeed not supposed to be used:
+label 
+Hudson Mills
+Huron Meadows
+Indian Springs
+Oak Marr
+East Potomac
+Olney Golf Park
+Lodestone Golf Course
+Needwood Golf Course
+Stony Creek
+Pebble Beach Golf Resort
+None of the above
+American
+European
+Asian
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Unused_Choice_Lists
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+This is the end of the report.
