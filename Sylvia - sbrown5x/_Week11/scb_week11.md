@@ -1,4 +1,4 @@
-# Week 6 Assignment: Consumer Finance Survey
+# Week 11 Assignment: Consumer Finance Survey
 ## Sylvia Brown
 
 This survey asks some simple questions on respondents' use of financial technology platforms and mobile apps.
@@ -6,6 +6,8 @@ This survey asks some simple questions on respondents' use of financial technolo
 ## Materials
 
 * The [link](https://docs.google.com/spreadsheets/d/1Ez2EQOQg-gr4vMVsr0jxVUDqhwCA-A7-v_D5QIC8W6w/edit?usp=sharing) to my survey spreadsheet.
+* `scb_data.csv`: A CSV copy of my survey data
+* `import_scb_week11.do`: The survey template for my survey.
 
 ## Reflections on iefieldtest Report
 
