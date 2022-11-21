@@ -1,0 +1,138 @@
+
+This report was created by user victoriapeng on 20Nov2022 using the Stata command ietestform
+
+Use either of these links to read more about this command:
+,https://github.com/worldbank/iefieldkit
+,https://dimewiki.worldbank.org/wiki/Ietestform
+
+,Form ID,victoria_week6
+,Form Title,Victoria Week6
+,Form Version,2211201856
+,Form File,Victoria Week6.xlsx
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON NUMERIC NAME VALUES
+----------------------------------------------------------------------
+
+"There are non numeric values in the [value] column of the choice sheet"
+
+,"row" ,"list_name" ,"value" ,"label" 
+,"51","Continent","Continent_code","Continent_name"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Value.2FName_Numeric
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NO STATA LIST LABEL
+----------------------------------------------------------------------
+
+"There is no column in the choice sheet with the name [label:stata]. This is best practice as it "
+"allows you to automatically import choice list labels optimized for Stata's value labels, making "
+"the data set easier to read."
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Stata_Labels_Columns
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: END/BEGIN NAME MISMATCH
+----------------------------------------------------------------------
+
+"The name in the end group/repeat does not match the name in the most recent begin group/repeat. "
+"This does not cause an error in ODK, but is recommended to solve programming errors with "
+"missmatching group/repeats fields. These cases were found:"
+
+"begin_repeat [families_member] on row 40 and end_repeat [family_member] on row 45"
+"begin_repeat [families_member] on row 40 and end_group [Family] on row 46"
+"begin_repeat [families_member] on row 40 and end_group [consented] on row 92"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Matching_begin_.2Fend
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NO STATA FIELD LABEL
+----------------------------------------------------------------------
+
+"There is no column in the survey sheet with the name [label:stata]. This is best practice as this "
+"allows you to automatically import variable labels optimized for Stata, making the data set easier "
+"to read."
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Stata_Labels_Columns
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON-REQUIRED NON-NOTE TYPE FIELD
+----------------------------------------------------------------------
+
+"Fields of types other than note should all be required so that it cannot be skipped during the "
+"interview. The following fields are not required and could therfore be skipped by the enumerator:"
+
+,"row" ,"type" ,"name" 
+,"59","integer","timeuse_golf_hours"
+,"60","integer","timeuse_studying_hours"
+,"61","integer","timeuse_dineout_hours"
+,"62","integer","timeuse_sleeping_hours"
+,"63","integer","timeuse_shopping_hours"
+,"64","integer","timeuse_working_hours"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Required_Column
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: REQUIRED NOTE TYPE FIELD
+----------------------------------------------------------------------
+
+"Fields of type note creates an impassable view that are impossible for the enumerator to sweep "
+"pass. Make sure that is the inentional behavior for the following fields:"
+
+,"row" ,"type" ,"name" 
+,"12","note","nocase"
+,"69","note","sum_timeuse_check2"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Required_Column
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: UNUSED CHOICE LISTS
+----------------------------------------------------------------------
+
+"There are lists in the choice sheet that are not used by any field in the survey sheet. While that "
+"is allowed in ODK syntax it is an indication of a typo that might casue errors later. Make sure "
+"that the following list items are indeed not supposed to be used:"
+
+,"row" ,"list_name" ,"value" ,"label" 
+,"31","course","1","Hudson Mills"
+,"32","course","2","Huron Meadows"
+,"33","course","3","Indian Springs"
+,"34","course","4","Oak Marr"
+,"35","course","5","East Potomac"
+,"36","course","6","Olney Golf Park"
+,"37","course","7","Lodestone Golf Course"
+,"38","course","8","Needwood Golf Course"
+,"39","course","9","Stony Creek"
+,"40","course","10","Pebble Beach Golf Resort"
+,"41","course","11","None of the above"
+,"48","nationality","0","American"
+,"49","nationality","1","European"
+,"50","nationality","2","Asian"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Unused_Choice_Lists
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+This is the end of the report.
