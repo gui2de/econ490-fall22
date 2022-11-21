@@ -64,7 +64,6 @@ clear
 tempfile assignments //generate tempfile for enumerator assignments
 save `assignments', emptyok
 
-
 use "${gps_data}" //import gps data
 egen h_total = count(id) //count number of households
 local hn = h_total //save number of households as local
@@ -116,8 +115,8 @@ if `e1' == `hn'/`en' {
 	local e2 = 0
 }
 
-local en2 = `hn' - `en'*`e1' //save number of enumerators with lower bound
-local en1 = `en'-`en2' //save number of enumerators with upper bound bound
+local en2 = `hn' - `en'*`e1' //save number of enumerators with upper bound
+local en1 = `en'-`en2' //save number of enumerators with lower bound bound
 
 forv i = 1/`en' { //loop through each enumerator
 
@@ -137,7 +136,6 @@ sort id_origin //make nonempty id_origin house first
 local id_origin_l = id_origin[1] //save id_origin as local
 
 replace id_origin = `id_origin_l' if (id1 == `id_origin_l'|id2 == `id_origin_l') & assigned == 0 //save all household pairs with the minimum lat house as having the origin house
-replace id_origin = `id_origin_l' if id2 == `id_origin_l' & assigned == 0
 
 replace enum_1 = `i' if id_origin == id1 & assigned == 0 //set enumerator for the origin house
 replace enum_2 = `i' if id_origin == id2 & assigned == 0
