@@ -6,6 +6,8 @@ For the Week 11 assignment, I added a new question seeking to suss out responden
 
 I created four separate versions of this list experiment, two with positively phrased statements and the other two with negatively phrased ones. Moreover, within each positive/negative category, I phrased the statements in different ways. For example, positive version 1 has the statement "The primary instructor(s) of the class was/were engaging," positive version 2 has "The class was taught in an exciting and effective way," negative version 1 has "The primary instructor(s) of the class was/were ineffectual," and negative version 2 uses "The class was taught in a boring an ineffective way." Each respondent is asked one version of this question, which is randomly chosen from amongst the four options with equal probability. By averaging responses from a variety of question framings, we have the potential to mitigate against biases in our results and thus obtain more accurate measures of our respondents' real sentiments.
 
+Also, I should note I heavily edited survey questions based on Beatrice's thoughtful feedback. I aimed to address each of her bullet points in great detail, and I consulted with her to ensure I did so correctly.
+
 # Where Is Everything!?
 
 In this directory, you will find my survey response data in the file week11_survey_data.csv and the Stata template in the week11_stata_template.do file. Both were downloaded from SurveyCTO and renamed for clarity.
