@@ -71,7 +71,7 @@ use "$gps_data", clear
 gen j = 100000 // Arbitrary number for loop below
 local i = 0 // Counter for loop below
 
-while j[1] > 74100 { // Arbitrary threshold I chose that seemed reasonable
+while j[1] > 60000 { // Arbitrary threshold I chose that seemed reasonable
 	
 	local i = `i' + 1 // Update then display loop number
 	di `i'
@@ -101,7 +101,7 @@ while j[1] > 74100 { // Arbitrary threshold I chose that seemed reasonable
 	*Take max of length, height, and area for each group as the criterion to measure of goodness-of-fit (i.e., group cluster cohesion)
 	gen length = (latitude_max - latitude_min) * 10^7 // Scaled by 10^7 for ease of interpreting numbers; no impact on outcome
 	gen height = (longitude_max - longitude_min) * 10^7
-	gen area = (latitude_max - latitude_min) * (longitude_max - longitude_min) & 10^7
+	gen area = (latitude_max - latitude_min) * (longitude_max - longitude_min) * 10^7
 	egen criterion = rowmax(length height area)
 	
 	*Replace j with mean criterion
