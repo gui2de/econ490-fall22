@@ -1,0 +1,126 @@
+
+This report was created by user benjamintu on 21Nov2022 using the Stata command ietestform
+
+Use either of these links to read more about this command:
+,https://github.com/worldbank/iefieldkit
+,https://dimewiki.worldbank.org/wiki/Ietestform
+
+,Form ID,bt_week6
+,Form Title,bt_week6
+,Form Version,2211211850
+,Form File,/Users/benjamintu/Downloads/week10_project/bt_week6.xlsx
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON NUMERIC NAME VALUES
+----------------------------------------------------------------------
+
+"There are non numeric values in the [value] column of the choice sheet"
+
+,"row" ,"list_name" ,"value" ,"label" ,"labelstata" 
+,"13","continentcsv","Continent_Code","Continent_Name","continent_name"
+,"14","countrycsv","Two_Letter_Country_Code","Country_Name","country_name"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Value.2FName_Numeric
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: MISSING LIST LABELS
+----------------------------------------------------------------------
+
+"There non-missing values in the [value] column of the choice sheet without a label in the [label] "
+"colum:"
+
+,"row" ,"list_name" ,"value" ,"label" ,"labelstata" 
+,"15","answered","1","Yes, willing and able to respond right now",""
+,"16","answered","2","Yes, but need to reschedule at a later date",""
+,"17","answered","3","No, I haven't been able to make contact with them yet",""
+,"18","answered","4","No, they refused to respond to this follow up survey",""
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Missing_Labels_or_Value.2FName_in_Choice_Lists
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: SPACES BEFORE OR AFTER STRING (survey sheet)
+----------------------------------------------------------------------
+
+"The string values in [name] column in the survey sheet are imported as strings and has leading or "
+"trailing spaces in the Excel file"
+
+,"row" ,"name" 
+,"26","name "
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Leading_and_Trailing_Spaces
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: MISSING END_GROUP/END_REPEAT NAME
+----------------------------------------------------------------------
+
+"It is bad practice to leave the name column empty for end_group or end_repeat fields. While this is "
+"allowed in ODK, it makes error finding harder and slower. The following repeat or end groups have "
+"empty name columns:"
+
+,"row" ,"type" ,"name" 
+,"51","end_group",""
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Matching_begin_.2Fend
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: NON-REQUIRED NON-NOTE TYPE FIELD
+----------------------------------------------------------------------
+
+"Fields of types other than note should all be required so that it cannot be skipped during the "
+"interview. The following fields are not required and could therfore be skipped by the enumerator:"
+
+,"row" ,"type" ,"name" 
+,"29","select_one","continent_pullcsv"
+,"30","select_one","country_pullcsv"
+,"37","text","club_name"
+,"40","select_one","has_meeting"
+,"41","select_one","has_event"
+,"42","select_one","has_teamwork"
+,"44","integer","club_time"
+,"49","integer","club_sensitive_agree"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Required_Column
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+TEST: UNUSED CHOICE LISTS
+----------------------------------------------------------------------
+
+"There are lists in the choice sheet that are not used by any field in the survey sheet. While that "
+"is allowed in ODK syntax it is an indication of a typo that might casue errors later. Make sure "
+"that the following list items are indeed not supposed to be used:"
+
+,"row" ,"list_name" ,"value" ,"label" ,"labelstata" 
+,"4","agree","1","Agree","agree"
+,"5","agree","0","Disagree","disagree"
+,"6","continent","1","Asia","asia"
+,"7","continent","2","Europe","europe"
+,"8","continent","3","Antartica","antartica"
+,"9","continent","4","Africa","africa"
+,"10","continent","5","Oceania","oceania"
+,"11","continent","6","North America","north america"
+,"12","continent","7","South America","south america"
+
+
+Read more about this test and why this is an error or does not follow the best practices we recommend here:
+https://dimewiki.worldbank.org/wiki/Ietestform#Unused_Choice_Lists
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+This is the end of the report.
