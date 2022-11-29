@@ -1,7 +1,11 @@
 ********* SIMULATED SCHOOL LUNCH RCT BASELINE DATA ************
 ** SCENARIO: Our group's RCT on universal free lunch is halfway through baseline data collection. We are working with 100 elementary schools, each of which have an mean of 75 fourth grade students, our study subjects. We have recruited 300 certified nurses assistants to serve as our enumerators for the project. Each school will be assigned three CNAs to perform the baseline surveys and health assessments. Before performing each baseline survey, the enumerators will access administrative records to note the student's free/reduced-price lunch eligibility and third grade standardized test score. During the baseline survey, the enumerators will perform a basic health exam on the student, measuring their BMI and assigning the student an overall health score on a scale from 1 to 5 (very poor, poor, fair, good, excellent). During the health exam, the enumerator will also ask the student questions about their social experiences at school and their use of the free/reduced-price lunch program if they are eligible.
 
-// Creat a tempfile of enumerator names
+// Set up globals
+global user "Users/abigailorbe/Documents/repos/econ490-fall22"
+cd "$user/_Group Projects/Group_3/Week_12/"
+
+// Create a tempfile of enumerator names
 tempfile enumerators
 set seed 10063963
 clear
@@ -53,3 +57,6 @@ gen b_bmi = rnormal(16.5, 1.3) if b_complete == 1 // student bmi, as reported by
 gen b_happiness = runiform(1, 5) if b_complete == 1 // student's reported happiness at school (1 being the least happy and 5 being the most happy)
 gen b_comfort = runiform(1, 5) if b_complete == 1 // student's reported comfortability at school (1 being the least comfortable and 5 being the most comfortable)
 gen b_healthyreport = runiform(1, 5) if b_complete == 1 // health score assigned to student after physical exam by enumerator
+
+// Export as a csv
+export delimited simulated_survey_data, replace
