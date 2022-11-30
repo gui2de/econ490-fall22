@@ -1,0 +1,12 @@
+---
+title: "feo_week11"
+
+Week 11 assignment: SurveyCTO
+
+Survey link : https://gui2de.surveycto.com/collect/feo_week6?caseid=
+
+Excel link: https://docs.google.com/spreadsheets/d/1TDdvfSX_L-V0Ybbs_--IGw-kN4tZt1GUjwgArQbUM5A/edit?usp=sharing 
+
+This survey contains questions about education years and level, level of expertise, employment history and yearly income. Added survey questions are the sensitive questions on wages. 
+
+From the iestest report, it encountered some errors in the continent questions on the survey. It also showed the non-required fields that can possibly be skipped. I was able to make corrections on the continent questions.  
