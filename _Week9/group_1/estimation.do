@@ -225,7 +225,7 @@ program define estimation, rclass // define an r-class program
 	+ rnormal(0,2)
 	label variable anc_timing "Number of weeks after intervention of first ANC visit"
 	
-	// re-estimate coefficient on gpa
+	// estimate coefficient on treatment
 	if "`biased'" == "" {
 		* create list of regressors to be included in regression
 		local biased_regressors "age child_age distance_anc distance_hospital married formerly_married primary_school secondary_or_more employed income_baseline num_other_child own_smartphone past_comp prev_antenatal visited_doc weeks_preg assign_treat_paper assign_treat_mobile"
@@ -263,7 +263,7 @@ program define estimation, rclass // define an r-class program
 		local sample_size = _N
 	}
 
-	// return statistics (coefficient on GPA and its standard error)
+	// return statistics (coefficient on treatment and its standard error)
 	return scalar b_mobile = `b_mobile'
 	return scalar b_paper = `b_paper'
 	return scalar se_mobile = `se_mobile'
