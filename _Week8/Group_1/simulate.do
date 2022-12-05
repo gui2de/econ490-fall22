@@ -15,22 +15,18 @@ program define salary_simulate, rclass // define an r-class program so that the 
 	label variable state "State in which college or university is located"
 	
 	generate u_i = rchi2(4)*1000 // generate fixed effects for states
-	generate random1 = runiform() // generate random numbers to be used to vary number of schools per region
+	generate random1 = runiform(15,25) // generate random numbers to be used to vary number of schools per region
 	
 	// generate university clusters within states, with 15-25 universities per state 
-	expand 15 if random1 < 0.3
-	expand 20 if random1 >= 0.3 & random1 < 0.7
-	expand 25 if random1 >= 0.7
+	expand round(random1)
 	bysort state: generate university = _n // generate university clusters
 	label variable university "College or university that student attended"
 	
 	generate e_ij = rnormal(0,5)*100 // generate fixed effects for universities
-	generate random2 = runiform()  // generate random numbers to be used to vary number of students per school
+	generate random2 = runiform(300,8000)  // generate random numbers to be used to vary number of students per school
 	
-	// generate student observations, with 500-1000 students per university
-	expand 500 if random2 < 0.3
-	expand 750 if random2 >= 0.3 & random2 < 0.8
-	expand 1000 if random2 >= 0.8
+	// generate student observations using a uniform random variable, with 300 to 8000 students per school
+	expand round(random2)
 	bysort state university: generate student = _n // generate student variable
 
 	* ---------- generate individual characteristics of students ----------*
@@ -39,14 +35,13 @@ program define salary_simulate, rclass // define an r-class program so that the 
 	label variable p1_educ "Student's parent 1's years of educational attainment"
 	generate p2_educ = runiformint(10,18)
 	label variable p2_educ "Student's parent 2's years of educational attainment"
-	generate sat_score = 1200+rnormal(0,70)
-	replace sat_score = trunc(sat_score)
+	generate sat_score = rnormal(1200,70)
+	replace sat_score = round(sat_score)
 	label variable sat_score "Student's SAT score"
 	replace sat_score = 1600 if sat_score > 1600
 	replace sat_score = 400 if sat_score < 400
-	generate ap_cred = rpoisson(2)
+	generate ap_cred = runiformint(0,12)
 	label variable ap_cred "Number of AP credits (or equivalent) taken in high school"
-	replace ap_cred = 8 if ap_cred > 8
 
 	// generate undergraduate GPA variable, which depends on the individual characteristics calculated above
 	generate gpa = 1.5 + (.01)*(p1_educ) + (.01)*(p2_educ) + (.001)*(sat_score) + (.05)*(ap_cred) + (rnormal()/100)
@@ -54,8 +49,8 @@ program define salary_simulate, rclass // define an r-class program so that the 
 	replace gpa = 4 if gpa > 4
 	replace gpa = 0 if gpa < 0
 	 
-	// geenrate variable representing undergraduate major
-	generate major = runiformint(1,34)
+	// generate variable representing undergraduate major
+	generate major = runiformint(1,200)
 	label variable major "College or university undergraduate major"
 	bysort major: gen m_k = rnormal()*7493 // generate fixed effect for major of study
 	
@@ -84,19 +79,25 @@ program define salary_simulate, rclass // define an r-class program so that the 
 	label values stratum_peduc stratum2
 	
 	* ---------- add individual ID variable ----------*
-	// generate a string variable with leading zeros for state variable
-	*generate str1 temp1 = string(state,"%01.0f")
-	*replace temp1 = string(state) if state >= 10
-	tostring state, format(%02.0f) generate(temp1)
+	// generate a string variable for state variable
+	tostring state, generate(temp1)
 	
-	// generate a string variable with leading zeros for university variable
-	tostring university, format(%02.0f) generate(temp2)
+	// generate a string variable for university variable
+	tostring university, generate(temp2)
 	
-	// generate a string variable with leading zeros for student variable
-	tostring student, format(%04.0f) generate(temp3)
+	// generate a string variable for student variable
+	tostring student, generate(temp3)
 	
-	// create id variable by concatenating string variables
-	egen id = concat(temp1 temp2 temp3)
+	// generate temporary string variables with characters to be used to create id variable
+	tempvar state_string
+	tempvar university_string
+	tempvar student_string
+	generate `state_string' = "sta"
+	generate `university_string' = "uni"
+	generate `student_string' = "stu"
+	
+	// create id variable by concatenating string versions of state, university, and student id numbers and character strings created immediately above
+	egen id = concat(`state_string' temp1 `university_string' temp2 `student_string' temp3)
 	label variable id "Identification number for student"
 	
 	// drop irrelevant string variables
