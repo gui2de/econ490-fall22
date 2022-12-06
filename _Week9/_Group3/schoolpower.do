@@ -55,17 +55,16 @@ prog def schoolpower, rclass
 	// Because free/reduced-price lunch eligibility is included in our data-generating process, excluding this variable (and its interaction with the treatment dummy) will bias the estimator
 	
 if "`biased'" == "" {
-	reg  score treat frpl, robust
+	reg  score treat frpl, robust cluster(school)
 	} // non-biased, with previous eligibility for FRPL
 else {
-	reg  score treat, robust
+	reg  score treat, robust cluster(school)
 	} // biased, excludes previous eligibility for FRPL
 	
 	* save effect coefficient as scalar
 		scalar b_treat = _b[treat]
 	
 **** (6) Power Calculations
-	local alpha = 0.05
 	matrix regtable=r(table)
 	scalar pvalue=regtable[4,1]
 end
