@@ -1,0 +1,13 @@
+# Week 12 Homework Assignment
+## Shaily Acharya, Sylvia Brown, and Neel Desai
+
+## Check 1: Patterned or Straightlined Responses
+
+This code checks whether the respondent is selecting a suspiciously patterned response on a series of Likert scales in the data (usually presented to respondents or enumerators in a matrix format). For instance, the relevant data could come from a matrix question where the columns are the Likert scale for satisfaction from "not at all satisfied" to "extremely satisfied", and the rows are different iPhone apps they have used in the past 3 months. If a patterned response is detected, the respondent's row will be flagged with a value of 1 for the `pattern_flag` variable. If no pattern is detected, their value for `pattern_flag` will be zero.
+
+This code checks for three different kinds of patterns: straight lines, zig zags, and "Christmas tree" patterns. When giving straight line responses, respondents answer each question with the same value. In our example question above, this would look like rating their experience of all of the iPhone apps listed as "Not at all satisfied" or "Somewhat satisfied". Zig-zagged responses are when respondents alternate between only two answer options when answering a question. In our example question above, this would look like answering "Not at all satisfied" for the first row, "Somewhat satisfied" for the second row, "Not at all satisfied" for the third row, and so on until similar questions on the page have been answered. Christmas tree-patterned responses are where the respondent answers the questions in a stepwise fashion where they start at the highest/lowest value and decrease/increase the value of their answer with each subsequent answer until they reach the lowest/highest value, at which point they begin to "step" back up/down again, creating a triangular pattern of responses.
+
+This code requires a couple of caveats. First, the presence of a patterned response may not be enough evidence to confirm that the respondent was not answering truthfully. It may be that the respondent's preferences just happened to fall in a pattern. It is up to the researcher's discretion, including their evaluation of other evidence that the respondent was not answering truthfully (e.g., patterned responses on other questions, short reponse time), to determine what action to take in response to a respondent being flagged by this code. Second, this code will not catch all patterns nor will it catch all untruthful reponses. It could be that the respondent uses a pattern that is more complex than the ones tested for here, or that they simply answer at random, creating a random pattern in their survey responses. Neither of these issues will be caught by this code.
+
+## Check 2
+
