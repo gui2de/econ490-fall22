@@ -17,7 +17,7 @@ This check compares the identity index, including name, age, sex, phone number, 
 
 #### Check 1.2: Respondent Phone
 
-This check is identical to the one above, except it identifies duplicates using respondent phone numbers. Ali explained in class that respondents may give false names or data when trying to "game the system," but they often give real phone numbers. Accordingly, we have implemented this check.
+This check is identical to the one above, except it identifies duplicates using respondent phone numbers. Ali explained in class that respondents may give false names or data when trying to "game the system," but they often give real phone numbers. Accordingly, we have implemented this check. The error can be alleviated by verifying respondents' phone numbers before the survey such as by calling or sending a text message.
 
 ### Check 2: Consent Question Duration
 
