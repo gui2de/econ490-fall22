@@ -11,9 +11,9 @@ We simulated a very simple dataset. We have 100 enumerators, each of whom asks a
 
 One common issue with data collection is that respondents are recorded multiple times in the dataset. Such duplication may be caused by enumerator error. Another possibility is that respondent(s) knowingly respond to multiple enumerators for additional compensation. We identify two issues with such duplication. First, duplicate observations may diminish our dataset's representativeness of the target population. Second, respondents may give contradictory answers in separate survey administrations, which may diminish the accuracy of our dataset.
 
-#### Check 1.1: Respondent ID
+#### Check 1.1: Identity Index
 
-This check compares the respondent_id, a stand-in for name, of each survey administration (i.e., row). The data associated with these duplicates are exported to the "Respondent ID Duplicates" sheet of the output Excel file. We encourage the field manager to examine these duplicates and discuss his/her findings with the appropriate enumerators.
+This check compares the identity index, including name, age, sex, phone number, and GPS coordinate, of each survey administration (i.e., row). The data associated with these duplicates are exported to the "Identity Index Duplicates" sheet of the output Excel file. Records that have duplicates of the same identity index within a month will be flagged. We encourage the field manager to examine these duplicates and discuss his/her findings with the appropriate enumerators.
 
 #### Check 1.2: Respondent Phone
 
@@ -21,7 +21,7 @@ This check is identical to the one above, except it identifies duplicates using 
 
 ### Check 2: Consent Question Duration
 
-We assume the consent question in our simulated data takes, at minimum, 30 seconds for the enumerator to read in full. This check flags enumerators who spend less than 30 seconds on the consent question and exports them to the "Consent Question Duration Flag" sheet of the output Excel file. Using these data, field managers can discuss the importance of survey consent with the appropriate enumerators.
+We assume the consent question in our simulated data takes, at minimum, 30 seconds for the enumerator to read in full. This check flags enumerators who spend less than 30 seconds on the consent question and exports them to the "Consent Question Duration Flag" sheet of the output Excel file. Audio files will also be created to record and transcribe the consent statement process. An audio length that is shorter than the average will be flagged. Using these data, field managers can discuss the importance of survey consent with the appropriate enumerators.
 
 ### Check 3: Survey Duration
 
