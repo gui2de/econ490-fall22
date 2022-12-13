@@ -1,0 +1,6 @@
+# Group 2, Week 12 Assignment 
+
+## Hgh Frequency Checks: 
+
+### Check 1: Average survey duration and outlier detection 
+The goal of this check is to look at the survey durations for each survey. Once we have these durations, we can see how many surveys were more than two standard deviations away from the median (which is not as affected by outliers as the mean) duration and flag those above (very slow) and below (very fast) surveys. However, just based on this, we cannot determine  whether this was a respondent-specific issue or an enumerator issue. To determine that, we can then compute the mean survey duration and see how each enumerator compares to the mean survey duration. In this manner we can identify which whether the problem is specific to respondents or certain enumerators. If it is the latter, then we can take corrective action to address this issue. The output for this check includes an excel file with the surveyor id, their average survey duration, the overall average survey duration, and the percentage difference in duration times. The limitation of this method is its susceptibility to outliers. If there are extremes which are driving the average in either direction, then it would mask other smaller, but significant, outliers. 
